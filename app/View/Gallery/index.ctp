@@ -32,7 +32,7 @@
 	</div>
 
 	<div class="btn-container-big">
-        <a href="javascript:void(0)" class="open-page" data-href="<?=!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/about'?>" class="btn btn-white btn-big text-black-small">Закрыть</a>
+        <a href="javascript:void(0)" data-href="<?=!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/about'?>" class="btn btn-white btn-big text-black-small open-page">Закрыть</a>
     </div>
     </div>
 </div>
