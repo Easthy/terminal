@@ -1,0 +1,36 @@
+.ui-loader {
+	display: none;
+	z-index: 9999999;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	border-width: 0;
+}
+.ui-loader-textonly .ui-icon-loading {
+	display: none;
+} 
+.ui-panel-page-container-themed .ui-page-active {
+	background: none;
+}
+.ui-page-active:focus,
+.ui-page-active:active {
+	outline: none;
+}
+#top-menu .valign {
+    max-width: 165px;
+    max-height: 90px;
+    overflow: hidden;
+}
+.slider-viewport {
+	background-position: 50% 50%; 
+	background-repeat: no-repeat; 
+	background-size: contain;
+	max-width:934px; 
+	max-height:381px;
+}
+.service-type {
+	text-align: center;	
+}
+.clear {
+	clear: both;
+}
