@@ -42,7 +42,7 @@
 	</div>
 
 	<div class="btn-container-big">
-		<a href="/calendar">
+		<a href="javascript:void(0)" class="open-page" data-href="/calendar">
 			<div class="btn-green btn-big">
 				<div style="height:100px; width: 150px; text-align: center" class="valign">
 					<img src="/img/icons/calendar_button.png" style="width:100px; height:100px;">
@@ -57,7 +57,7 @@
 	</div>
 </div>
 
-<a href="/about">
+<a href="javascript:void(0)" class="open-page" data-href="/about">
 	<div style="width:400px; height: 150px; float:left; background-color: #ffffff; border-radius: 80px; margin:20px;">
 		<div style="margin-top:55px; margin-left:60px; float: left;">
 			<img src="/img/icons/book.png" style="width:40px; height:40px;">
@@ -69,7 +69,7 @@
 	</div>
 </a>
 
-<a href="/company/list_">
+<a href="javascript:void(0)" class="open-page" data-href="/company/list_">
 	<div style="width:400px; height: 150px; float:left; background-color: #ffffff; border-radius: 80px; margin:20px;">
 		<div style="margin-top:55px; margin-left:60px; float: left;">
 			<img src="/img/icons/book.png" style="width:40px; height:40px;">
@@ -81,7 +81,7 @@
 	</div>
 </a>
 
-<a href="/service">
+<a href="javascript:void(0)" class="open-page"  data-href="/service">
 	<div style="width:400px; height: 150px; float:left; background-color: #ffffff; border-radius: 80px; margin:20px;">
 		<div style="margin-top:55px; margin-left:60px; float: left;">
 			<img src="/img/icons/hand.png" style="width:40px; height:40px;">
@@ -93,7 +93,7 @@
 	</div>
 </a>
 
-<a href="/activity/bycompany">
+<a href="javascript:void(0)" class="open-page" data-href="/activity/bycompany">
 	<div style="width:400px; height: 150px; float:left; background-color: #ffffff; border-radius: 80px; margin:20px;">
 		<div style="margin-top:55px; margin-left:60px; float: left;">
 			<img src="/img/icons/about_activity.png" style="width:40px; height:40px;">
@@ -105,7 +105,7 @@
 	</div>
 </a>
 
-<a href="/activity/long_life">
+<a href="javascript:void(0)" class="open-page" data-href="/activity/long_life">
 	<div style="width:400px; height: 150px; float:left; background-color: #ffffff; border-radius: 80px; margin:20px;">
 		<div style="margin-top:45px; margin-left:60px; float: left;">
 			<img src="/img/icons/kremlin.png" style="width:40px; height:60px;">
@@ -117,7 +117,7 @@
 	</div>
 </a>
 
-<a href="/activity/cityevents">
+<a href="javascript:void(0)" class="open-page" data-href="/activity/cityevents">
 	<div style="width:400px; height: 150px; float:left; background-color: #ffffff; border-radius: 80px; margin:20px;">
 		<div style="margin-top:55px; margin-left:60px; float: left;">
 			<img src="/img/icons/theater.png" style="width:40px; height:40px;">
@@ -129,7 +129,7 @@
 	</div>
 </a>
 
-<a href="/about/department">
+<a href="javascript:void(0)" class="open-page" data-href="/about/department">
 	<div style="width:400px; height: 150px; float:left; background-color: #ffffff; border-radius: 80px; margin:20px;">
 		<div style="margin-top:55px; margin-left:60px; float: left;">
 			<img src="/img/icons/lead.png" style="width:40px; height:40px;">
@@ -141,7 +141,7 @@
 	</div>
 </a>
 
-<a href="https://emias.info/appointment/">
+<a href="javascript:void(0)" class="open-page" data-href="https://emias.info/appointment/">
 	<div style="width:400px; height: 150px; float:left; background-color: #ffffff; border-radius: 80px; margin:20px;">
 		<div style="float: left; margin-left:100px;">
 			<div class="text-blue-small-thick text-open-sans text-centered" style="width: 150px; height: 150px;">Запись к врачу</div>

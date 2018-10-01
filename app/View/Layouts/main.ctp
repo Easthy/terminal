@@ -91,7 +91,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							$class = "menu-root";
 						}
 
-						echo '<a href="'.$menu_item['href'].'"><div class="menu-item '.$class.'">
+						echo '<a href="javascript:void(0)" class="open-page" data-href="'.$menu_item['href'].'"><div class="menu-item '.$class.'">
 							<div class="dummy"></div><div class="valign">'.$menu_item['name'].'</div></div></a>';
 					}
 

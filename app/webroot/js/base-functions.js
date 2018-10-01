@@ -32,8 +32,8 @@ $(function() {
 	Terminal.clock();
 	// Screensaver
 	Terminal.screensaver = {
-		time_wait 			: 70000,
-		time_inactive 		: 70000,
+		time_wait 			: 70,
+		time_inactive 		: 70,
 		timer 				: null
 	};
 	Terminal.screensaver.getScreensaver = function(){

@@ -9,7 +9,7 @@
 							<tr>
 								<?php 
 									foreach ($albums as $album ) {
-										echo '<td><a href="/gallery?photo_album_id='.$album[0]['photo_album_id'].'"><img src="/'.$album[0]['path'].'"></a></td>';
+										echo '<td><a href="javascript:void(0)" class="open-page" data-href="/gallery?photo_album_id='.$album[0]['photo_album_id'].'"><img src="/'.$album[0]['path'].'"></a></td>';
 									}
 								?>
 							</tr>
