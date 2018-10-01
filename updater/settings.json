@@ -1,0 +1,232 @@
+{
+	"credentials": {"email":"updater@thyloved.ru","password":"H4TiO4","remember_me":false},
+	"storage_base_path": "/home/tolik/Yandex/7_job/Терминал/updater/file_cache",
+	"updater_sql_path": "/home/tolik/Yandex/7_job/Терминал/updater/sql/updater.sql",
+	"file_root_path": "/home/tolik/Yandex/7_job/Терминал/updater",
+	"file_url": "http://test-terminal",
+	"user_agent": "infomat-updater",
+	"base_url": "http://test-dreamfactory",
+	"api_url": "api/v2",
+	"auth_service": "user/session",
+	"api_key": "6498a8ad1beb9d84d63035c5d1120c007fad6de706734db9689f8996707e0f7d",
+	"infomat_id": "1",
+	"infomat_db": {
+		"host": "localhost",
+		"database": "infomat_qt_sync",
+		"user": "postgres",
+		"password": "H4TiO4"
+	},
+	"sh_query_params": {
+    	"fields": "*", 
+    	"filter": "(infomat_id=#infomat_id#)and(state=0)and(executed=0)"
+	},
+	"sh_service": "infomat_qt",
+	"sh_table": "sh_list",
+	"sh_folder": "shell_script",
+	"tables": {
+	    "activity": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "activity_category": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt",
+	        "files": ["icon_path","image_path"]
+	    },
+	    "activity_event": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "activity_periodicity": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "activity_photo": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt",
+	        "files": ["path"]
+	    },
+	    "activity_type": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "activity_visitor_register": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "agency": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "agency_management": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "agency_photo": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt",
+	        "files": ["path"]
+	    },
+	    "agency_photo_album": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "city_activity": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "city_activity_category": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt",
+	        "files": ["icon_path","image_path"]
+	    },
+	    "city_activity_photo": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt",
+	        "files": ["path"]
+	    },
+	    "city_activity": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "city_district": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "city_region": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "department_management": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt",
+	        "files": ["path"]
+	    },
+	    "long_life_activity": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "long_life_activity_category": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt",
+	        "files": ["icon_path","image_path"]
+	    },
+	    "long_life_activity_photo": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt",
+	        "files": ["path"]
+	    },
+	    "screen_file": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt",
+	        "files": ["link_file"]
+	    },
+	    "screen_saver": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "service": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt",
+	        "files": ["path"]
+	    },
+	    "service_category": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt",
+	        "files": ["icon_path","image_path"]
+	    },
+	    "service_chargeable_type": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "service_chargeable_type_to_service": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "service_location_type": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "service_to_agency": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "service_tree": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "service_type": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
+	    "visitor": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    }
+	}
+}
+ 
