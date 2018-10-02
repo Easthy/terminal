@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-sys.path.append('/usr/local/lib/python3.6/dist-packages/PyQt5/')
+# sys.path.append('/usr/local/lib/python3.6/dist-packages/PyQt5/')
 from PyQt5 import *
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QEvent, pyqtSlot, pyqtSignal
@@ -63,6 +63,26 @@ class Example(QMainWindow):
         # self.webView.triggerPageAction(self.afterPageLoad)
         self.DigitKeyboard.keyClick.connect(self.clickHandler)
         self.DigitKeyboard.homeClick.connect(partial(self.openPage,self.pages['home']))
+        self.webView.installEventFilter(self)
+
+    def eventFilter(self, object, event):
+        if event.type() == QtCore.QEvent.HoverMove:
+            mousePosition = event.pos()
+            cursor = QtGui.QCursor()
+
+            print(
+                "Mouse: [" + mousePosition.x().__str__() + ", " + mousePosition.y().__str__() + "]"
+                + "\tCursor: [" + cursor.pos().x().__str__() + ", " + cursor.pos().y().__str__() + "]"
+
+            )
+
+            return True
+
+        elif event.type() == QtCore.QEvent.MouseButtonPress:
+            print "Mouse pressed"
+            return True
+
+        return False
 
     def openPage(self,url):
         self.webView.setUrl(QtCore.QUrl(url))
