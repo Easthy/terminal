@@ -75,11 +75,10 @@ class Example(QMainWindow):
                 + "\tCursor: [" + cursor.pos().x().__str__() + ", " + cursor.pos().y().__str__() + "]"
 
             )
-
             return True
 
         elif event.type() == QtCore.QEvent.MouseButtonPress:
-            print "Mouse pressed"
+            print ("Mouse pressed")
             return True
 
         return False
