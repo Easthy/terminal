@@ -2890,7 +2890,7 @@ function triggerCustomEvent( obj, eventType, event, bubble ) {
 // also handles taphold
 $.event.special.tap = {
 	tapholdThreshold: 50, // the more - the less time is accepted
-	emitTapOnTaphold: true,
+	emitTapOnTaphold: false,
 	setup: function() {
 		var thisObject = this,
 			$this = $( thisObject ),
