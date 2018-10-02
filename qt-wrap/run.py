@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import sys
-# sys.path.append('/usr/local/lib/python3.6/dist-packages/PyQt5/')
 from PyQt5 import *
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QEvent, pyqtSlot, pyqtSignal
@@ -10,6 +9,7 @@ from PyQt5.QtGui import QIcon, QKeyEvent, QKeySequence, QFont
 from PyQt5 import QtWebEngineWidgets
 from PyQt5.QtWebChannel import QWebChannel
 from functools import partial
+from datetime import datetime
 
 class Example(QMainWindow):
     host_method = {
@@ -63,24 +63,29 @@ class Example(QMainWindow):
         # self.webView.triggerPageAction(self.afterPageLoad)
         self.DigitKeyboard.keyClick.connect(self.clickHandler)
         self.DigitKeyboard.homeClick.connect(partial(self.openPage,self.pages['home']))
-        self.webView.installEventFilter(self)
+        self.webView.focusProxy().installEventFilter(self)
+        self.press_timestamp = 0
+        self.mouse_x = 0
+        self.mouse_y = 0
 
     def eventFilter(self, object, event):
-        if event.type() == QtCore.QEvent.HoverMove:
-            mousePosition = event.pos()
-            cursor = QtGui.QCursor()
+        # print('eventFilter')
+        # print( event.type() )
+        cursor = QtGui.QCursor()
+        # print( [cursor.pos().x(), cursor.pos().y()] )
 
-            print(
-                "Mouse: [" + mousePosition.x().__str__() + ", " + mousePosition.y().__str__() + "]"
-                + "\tCursor: [" + cursor.pos().x().__str__() + ", " + cursor.pos().y().__str__() + "]"
-
-            )
-            return True
-
-        elif event.type() == QtCore.QEvent.MouseButtonPress:
-            print ("Mouse pressed")
-            return True
-
+        if event.type() == QtCore.QEvent.MouseButtonPress:
+            self.press_timestamp = datetime.utcnow().timestamp()
+            print ("Mouse pressed: "+ str(self.press_timestamp) )
+            return False
+        if event.type() == QtCore.QEvent.MouseButtonRelease:
+            release_timestamp = datetime.utcnow().timestamp()
+            print ("Mouse released: "+ str(release_timestamp) )
+            if ( release_timestamp - self.press_timestamp < 0.050 ):
+                print ("Release filtered out")
+                return True
+            print ("Mouse release")
+            
         return False
 
     def openPage(self,url):
