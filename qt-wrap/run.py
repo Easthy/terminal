@@ -65,8 +65,7 @@ class Example(QMainWindow):
         self.DigitKeyboard.homeClick.connect(partial(self.openPage,self.pages['home']))
         self.webView.focusProxy().installEventFilter(self)
         self.press_timestamp = 0
-        self.mouse_x = 0
-        self.mouse_y = 0
+        self.release_timestamp = 0
 
     def eventFilter(self, object, event):
         # print('eventFilter')
@@ -76,12 +75,16 @@ class Example(QMainWindow):
 
         if event.type() == QtCore.QEvent.MouseButtonPress:
             self.press_timestamp = datetime.utcnow().timestamp()
+            if ( self.release_timestamp > 0 and self.press_timestamp - self.release_timestamp < 0.15 ):
+                print ("Press filtered out:"+ str(self.release_timestamp - self.press_timestamp))
+                return True
             print ("Mouse pressed: "+ str(self.press_timestamp) )
             return False
         if event.type() == QtCore.QEvent.MouseButtonRelease:
             release_timestamp = datetime.utcnow().timestamp()
             print ("Mouse released: "+ str(release_timestamp) )
-            if ( release_timestamp - self.press_timestamp < 0.050 ):
+            if ( release_timestamp - self.press_timestamp < 0.1 or release_timestamp - self.press_timestamp > 0.5 ):
+                self.release_timestamp = release_timestamp
                 print ("Release filtered out")
                 return True
             print ("Mouse release")
