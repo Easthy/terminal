@@ -72,19 +72,19 @@ class Example(QMainWindow):
         # print( event.type() )
         cursor = QtGui.QCursor()
         # print( [cursor.pos().x(), cursor.pos().y()] )
-
+        event_timestamp = datetime.utcnow().timestamp()
         if event.type() == QtCore.QEvent.MouseButtonPress:
-            self.press_timestamp = datetime.utcnow().timestamp()
+            print ("Mouse pressed: "+ str(event_timestamp) )
+            self.press_timestamp = event_timestamp
             # if ( self.release_timestamp > 0 and self.press_timestamp - self.release_timestamp < 0.15 ):
             #     print ("Press filtered out:"+ str(self.release_timestamp - self.press_timestamp))
             #     return True
             # print ("Mouse pressed: "+ str(self.press_timestamp) )
             return False
         if event.type() == QtCore.QEvent.MouseButtonRelease:
-            release_timestamp = datetime.utcnow().timestamp()
-            print ("Mouse released: "+ str(release_timestamp) )
-            if ( release_timestamp - self.press_timestamp < 0.15 or release_timestamp - self.press_timestamp > 0.5 ):
-                self.release_timestamp = release_timestamp
+            print ("Mouse released: "+ str(event_timestamp) )
+            if ( event_timestamp - self.press_timestamp < 0.2 or event_timestamp - self.press_timestamp > 0.5 ):
+                # self.release_timestamp = release_timestamp
                 print ("Release filtered out")
                 return True
             print ("Mouse release")
