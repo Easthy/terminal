@@ -81,7 +81,7 @@ class Example(QMainWindow):
             print ("Mouse pressed: "+str(event_timestamp - self.release_timestamp))
             return False
         if event.type() == QtCore.QEvent.MouseButtonRelease:
-            if ( event_timestamp - self.press_timestamp < 0.1 or event_timestamp - self.press_timestamp > 0.5 ):
+            if ( event_timestamp - self.press_timestamp < 0.15 or event_timestamp - self.press_timestamp > 0.5 ):
                 print ("Release filtered out: "+str(event_timestamp - self.press_timestamp))
                 return True
             self.release_timestamp = event_timestamp
