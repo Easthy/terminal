@@ -86,6 +86,10 @@ class Example(QMainWindow):
                 return True
             self.release_timestamp = event_timestamp
             print ("Mouse released: "+str(event_timestamp - self.press_timestamp))
+        if event.type() == QtCore.QEvent.MouseMove:
+            if(self.press_timestamp<self.release_timestamp):
+                print("Mouse move filtered out: "+str(self.press_timestamp-self.release_timestamp))
+                return True
             
         return False
 
