@@ -74,7 +74,7 @@ class Example(QMainWindow):
         event_timestamp = datetime.utcnow().timestamp()
         if cursor_x < 20 or cursor_x > 1060 or cursor_y < 20 or cursor_y > 1900:
             print('Edges filtered out: '+ str(cursor_x)+','+str(cursor_y))
-            # return True
+            return True
 
         if event.type() == QtCore.QEvent.MouseButtonPress:
             if ( self.release_timestamp > 0 and event_timestamp - self.release_timestamp < 0.15 ):
@@ -84,7 +84,7 @@ class Example(QMainWindow):
             print ("Mouse pressed: "+str(event_timestamp - self.release_timestamp))
             return False
         if event.type() == QtCore.QEvent.MouseButtonRelease:
-            if ( event_timestamp - self.press_timestamp < 0.15 or event_timestamp - self.press_timestamp > 0.5 ):
+            if ( event_timestamp - self.press_timestamp < 0.2 or event_timestamp - self.press_timestamp > 0.55 ):
                 print ("Release filtered out: "+str(event_timestamp - self.press_timestamp))
                 return True
             self.release_timestamp = event_timestamp
