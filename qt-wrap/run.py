@@ -103,10 +103,10 @@ class Terminal(QMainWindow):
             "cursor_y": cursor_y
         }
 
-        # if cursor_x < self.cursor_x_min or cursor_x > self.cursor_x_max or cursor_y < self.cursor_y_min or cursor_y > self.cursor_y_max:
-        #     log_object["filter"] = 'Edges filtered out'
-        #     self.event_log( log_object )
-        #     return True
+        if cursor_x < self.cursor_x_min or cursor_x > self.cursor_x_max or cursor_y < self.cursor_y_min or cursor_y > self.cursor_y_max:
+            log_object["filter"] = 'Edges filtered out'
+            self.event_log( log_object )
+            return True
 
         if event.type() == QtCore.QEvent.MouseButtonPress:
             if ( self.release_timestamp > 0 and event_timestamp - self.release_timestamp < self.press_min_pause ):
@@ -143,12 +143,6 @@ class Terminal(QMainWindow):
                 self.event_log( log_object )
                 return True
 
-
-        if event.type() == QtCore.QEvent.HoverMove or event.type() == QtCore.QEvent.IconDrag:
-            log_object["filter"] = "HoverMove IconDrag or filtered out: "
-            self.event_log( log_object )
-            return True
-            
         return False
 
     def event_log(self,d):

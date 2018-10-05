@@ -1,6 +1,6 @@
 {
     "press_min_pause" : 0.2,
-    "press_min_duration" : 0.2,
+    "press_min_duration" : 0.17,
     "press_max_duration" : 0.50,
     "move_after_release_min": 0.5,
     "move_after_press_min": 0.1,
