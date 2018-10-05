@@ -84,6 +84,7 @@ class Terminal(QMainWindow):
         dir_path = os.path.dirname(os.path.realpath(__file__))
         settings_path = dir_path+'settings.json'
         if ( not os.path.isfile(settings_path) ):
+            print('Settings file not found')
             return False
         with open( settings_path, 'r') as f:
             settings = json.loads(f.read())
