@@ -100,8 +100,7 @@ class Terminal(QMainWindow):
             "cursor_x": cursor_x,
             "cursor_y": cursor_y
         }
-        self.event_log( log_object )
-
+        
         # if cursor_x < self.cursor_x_min or cursor_x > self.cursor_x_max or cursor_y < self.cursor_y_min or cursor_y > self.cursor_y_max:
         #     log_object["filter"] = 'Edges filtered out'
         #     self.event_log( log_object )
