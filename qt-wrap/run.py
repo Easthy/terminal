@@ -5,6 +5,9 @@ from functools import partial
 from datetime import datetime
 import json
 
+import signal
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+
 from PyQt5 import *
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QEvent, pyqtSlot, pyqtSignal
