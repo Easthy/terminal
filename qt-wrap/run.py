@@ -100,7 +100,7 @@ class Terminal(QMainWindow):
             "cursor_x": cursor_x,
             "cursor_y": cursor_y
         }
-        
+
         # if cursor_x < self.cursor_x_min or cursor_x > self.cursor_x_max or cursor_y < self.cursor_y_min or cursor_y > self.cursor_y_max:
         #     log_object["filter"] = 'Edges filtered out'
         #     self.event_log( log_object )
@@ -124,6 +124,7 @@ class Terminal(QMainWindow):
             log_object["event"] = "Mouse released: "+str(event_timestamp - self.press_timestamp)
             self.event_log( log_object )
         if event.type() == QtCore.QEvent.MouseMove:
+            return True
             if(self.press_timestamp<self.release_timestamp):
                 log_object["filter"] = "Mouse move filtered out: "+str(self.press_timestamp-self.release_timestamp)
                 self.event_log( log_object )
