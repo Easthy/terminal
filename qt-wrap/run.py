@@ -97,26 +97,41 @@ class Terminal(QMainWindow):
         cursor_x = cursor.pos().x()
         cursor_y = cursor.pos().y()
         event_timestamp = datetime.utcnow().timestamp()
+        log_object = {
+            "EVENT": event.type(),
+            'event_timestamp': event_timestamp,
+            "cursor_x": cursor_x,
+            "cursor_y": cursor_y
+        }
+        self.event_log( log_object )
+        return False
+        self.event_log( 'EVENT: '+str(event.type()) + ', cursor: '+str(cursor_x)+','+str(cursor_y) )
         if cursor_x < self.cursor_x_min or cursor_x > self.cursor_x_max or cursor_y < self.cursor_y_min or cursor_y > self.cursor_y_max:
-            print('Edges filtered out: '+ str(cursor_x)+','+str(cursor_y))
+            log_object["filter"] = 'Edges filtered out'
+            self.event_log( log_object )
             return True
 
         if event.type() == QtCore.QEvent.MouseButtonPress:
             if ( self.release_timestamp > 0 and event_timestamp - self.release_timestamp < self.press_min_pause ):
-                print ("Press filtered out:"+ str(event_timestamp - self.release_timestamp))
+                log_object["filter"] = 'Press filtered out' + str(event_timestamp - self.release_timestamp)
+                self.event_log( log_object )
                 return True
             self.press_timestamp = event_timestamp
-            print ("Mouse pressed: "+str(event_timestamp - self.release_timestamp))
+            log_object["event"] = "Mouse pressed: "+str(event_timestamp - self.release_timestamp)
+            self.event_log( log_object )
             return False
         if event.type() == QtCore.QEvent.MouseButtonRelease:
             if ( event_timestamp - self.press_timestamp < self.press_min_duration or event_timestamp - self.press_timestamp > self.press_max_duration ):
-                print ("Release filtered out: "+str(event_timestamp - self.press_timestamp))
+                log_object["filter"] = 'Release filtered out:' + str(event_timestamp - self.press_timestamp)
+                self.event_log( log_object )
                 return True
             self.release_timestamp = event_timestamp
-            print ("Mouse released: "+str(event_timestamp - self.press_timestamp))
+            log_object["event"] = "Mouse released: "+str(event_timestamp - self.press_timestamp)
+            self.event_log( log_object )
         if event.type() == QtCore.QEvent.MouseMove:
             if(self.press_timestamp<self.release_timestamp):
-                print("Mouse move filtered out: "+str(self.press_timestamp-self.release_timestamp))
+                log_object["filter"] = "Mouse move filtered out: "+str(self.press_timestamp-self.release_timestamp)
+                self.event_log( log_object )
                 return True
 
         if event.type() == QtCore.QEvent.HoverMove:
@@ -125,6 +140,17 @@ class Terminal(QMainWindow):
             print('IconDrag')
             
         return False
+
+    def event_log(self,d):
+        self.save_file('events.log',"\n"+json.dumps(d))
+
+    def save_file(self,path,file):
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        path = dir_path+'/'+path
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path,'a') as f:
+            f.write(file)
+            f.close()
 
     def openPage(self,url):
         self.webView.setUrl(QtCore.QUrl(url))
