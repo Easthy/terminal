@@ -77,6 +77,9 @@ class Terminal(QMainWindow):
         self.cursor_x_max = 1060
         self.cursor_y_min = 20
         self.cursor_y_max = 1900
+        self.cursor_x = 0
+        self.cursor_y = 0
+        self.press_release_distance = 500
         settings = self.load_settings()
 
     def load_settings(self):
@@ -96,9 +99,10 @@ class Terminal(QMainWindow):
         cursor_x = cursor.pos().x()
         cursor_y = cursor.pos().y()
         event_timestamp = datetime.utcnow().timestamp()
+        readable_event_timestamp = datetime.utcfromtimestamp(event_timestamp).strftime('%Y-%m-%d %H:%M:%S.%f')
         log_object = {
             "EVENT": event.type(),
-            'event_timestamp': event_timestamp,
+            'event_timestamp': readable_event_timestamp,
             "cursor_x": cursor_x,
             "cursor_y": cursor_y
         }
@@ -114,14 +118,18 @@ class Terminal(QMainWindow):
                 self.event_log( log_object )
                 return True
             self.press_timestamp = event_timestamp
+            self.cursor_x = cursor_x
+            self.cursor_y = cursor_y
             log_object["event"] = "Mouse pressed: "+str(event_timestamp - self.release_timestamp)
             self.event_log( log_object )
-            return False
-
 
         if event.type() == QtCore.QEvent.MouseButtonRelease:
             if ( event_timestamp - self.press_timestamp < self.press_min_duration or event_timestamp - self.press_timestamp > self.press_max_duration ):
                 log_object["filter"] = 'Release filtered out:' + str(event_timestamp - self.press_timestamp)
+                self.event_log( log_object )
+                return True
+            if ( (cursor_x - self.cursor_x) > self.press_release_distance or (cursor_y - self.cursor_y) > self.press_release_distance ):
+                log_object["filter"] = 'Release filtered out by press_release_distance:'
                 self.event_log( log_object )
                 return True
             self.release_timestamp = event_timestamp
@@ -144,6 +152,7 @@ class Terminal(QMainWindow):
                 return True
 
         return False
+
 
     def event_log(self,d):
         self.save_file('events.log',"\n"+json.dumps(d))
