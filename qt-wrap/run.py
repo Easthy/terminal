@@ -114,7 +114,7 @@ class Terminal(QMainWindow):
 
         if event.type() == QtCore.QEvent.MouseButtonPress:
             if ( self.release_timestamp > 0 and event_timestamp - self.release_timestamp < self.press_min_pause ):
-                log_object["filter"] = 'Press filtered out' + str(event_timestamp - self.release_timestamp)
+                log_object["filter"] = 'Press filtered out: ' + str(event_timestamp - self.release_timestamp)
                 self.event_log( log_object )
                 return True
             self.press_timestamp = event_timestamp
@@ -125,7 +125,7 @@ class Terminal(QMainWindow):
 
         if event.type() == QtCore.QEvent.MouseButtonRelease:
             if ( event_timestamp - self.press_timestamp < self.press_min_duration or event_timestamp - self.press_timestamp > self.press_max_duration ):
-                log_object["filter"] = 'Release filtered out:' + str(event_timestamp - self.press_timestamp)
+                log_object["filter"] = 'Release filtered out: ' + str(event_timestamp - self.press_timestamp)
                 self.event_log( log_object )
                 return True
             if ( (cursor_x - self.cursor_x) > self.press_release_distance or (cursor_y - self.cursor_y) > self.press_release_distance ):
