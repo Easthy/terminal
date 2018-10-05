@@ -1,0 +1,9 @@
+{
+    "press_min_pause" : 0.15,
+    "press_min_duration" : 0.2,
+    "press_max_duration" : 0.55,
+    "cursor_x_min" : 20,
+    "cursor_x_max" : 1060,
+    "cursor_y_min" : 20,
+    "cursor_y_max" : 1900
+} 

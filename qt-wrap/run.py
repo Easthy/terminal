@@ -10,8 +10,9 @@ from PyQt5 import QtWebEngineWidgets
 from PyQt5.QtWebChannel import QWebChannel
 from functools import partial
 from datetime import datetime
+import json
 
-class Example(QMainWindow):
+class Terminal(QMainWindow):
     host_method = {
         "emias.info": 'showKeyboard'
     }
@@ -66,25 +67,42 @@ class Example(QMainWindow):
         self.webView.focusProxy().installEventFilter(self)
         self.press_timestamp = 0
         self.release_timestamp = 0
+        #
+        self.press_min_pause = 0.15
+        self.press_min_duration = 0.2
+        self.press_max_duration = 0.55
+        self.cursor_x_min = 20
+        self.cursor_x_max = 1060
+        self.cursor_y_min = 20
+        self.cursor_y_max = 1900
+        settings = self.load_settings()
+
+    def load_settings(self):
+        settings_path = 'settings.json'
+        with open( settings_path, 'r') as f:
+            settings = json.loads(f.read())
+            for k,v in settings.items():
+                setattr(self, k, v)
+        f.close()
 
     def eventFilter(self, object, event):
         cursor = QtGui.QCursor()
         cursor_x = cursor.pos().x()
         cursor_y = cursor.pos().y()
         event_timestamp = datetime.utcnow().timestamp()
-        if cursor_x < 20 or cursor_x > 1060 or cursor_y < 20 or cursor_y > 1900:
+        if cursor_x < self.cursor_x_min or cursor_x > self.cursor_x_max or cursor_y < self.cursor_y_min or cursor_y > self.cursor_y_max:
             print('Edges filtered out: '+ str(cursor_x)+','+str(cursor_y))
             return True
 
         if event.type() == QtCore.QEvent.MouseButtonPress:
-            if ( self.release_timestamp > 0 and event_timestamp - self.release_timestamp < 0.15 ):
+            if ( self.release_timestamp > 0 and event_timestamp - self.release_timestamp < self.press_min_pause ):
                 print ("Press filtered out:"+ str(event_timestamp - self.release_timestamp))
                 return True
             self.press_timestamp = event_timestamp
             print ("Mouse pressed: "+str(event_timestamp - self.release_timestamp))
             return False
         if event.type() == QtCore.QEvent.MouseButtonRelease:
-            if ( event_timestamp - self.press_timestamp < 0.2 or event_timestamp - self.press_timestamp > 0.55 ):
+            if ( event_timestamp - self.press_timestamp < self.press_min_duration or event_timestamp - self.press_timestamp > self.press_max_duration ):
                 print ("Release filtered out: "+str(event_timestamp - self.press_timestamp))
                 return True
             self.release_timestamp = event_timestamp
@@ -93,6 +111,11 @@ class Example(QMainWindow):
             if(self.press_timestamp<self.release_timestamp):
                 print("Mouse move filtered out: "+str(self.press_timestamp-self.release_timestamp))
                 return True
+
+        if event.type() == QtCore.QEvent.HoverMove:
+            print('HoverMove')
+        if event.type() == QtCore.QEvent.IconDrag:
+            print('IconDrag')
             
         return False
 
@@ -241,5 +264,5 @@ class DigitKeyboard(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = Example()
+    ex = Terminal()
     sys.exit(app.exec_())
