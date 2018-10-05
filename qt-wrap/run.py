@@ -71,6 +71,8 @@ class Terminal(QMainWindow):
         self.press_min_pause = 0.15
         self.press_min_duration = 0.2
         self.press_max_duration = 0.55
+        self.move_after_release_min = 0.5
+        self.move_after_press_min = 0.1
         self.cursor_x_min = 20
         self.cursor_x_max = 1060
         self.cursor_y_min = 20
@@ -115,6 +117,8 @@ class Terminal(QMainWindow):
             log_object["event"] = "Mouse pressed: "+str(event_timestamp - self.release_timestamp)
             self.event_log( log_object )
             return False
+
+
         if event.type() == QtCore.QEvent.MouseButtonRelease:
             if ( event_timestamp - self.press_timestamp < self.press_min_duration or event_timestamp - self.press_timestamp > self.press_max_duration ):
                 log_object["filter"] = 'Release filtered out:' + str(event_timestamp - self.press_timestamp)
@@ -123,11 +127,23 @@ class Terminal(QMainWindow):
             self.release_timestamp = event_timestamp
             log_object["event"] = "Mouse released: "+str(event_timestamp - self.press_timestamp)
             self.event_log( log_object )
+
+
         if event.type() == QtCore.QEvent.MouseMove:
             if(self.press_timestamp<self.release_timestamp):
-                log_object["filter"] = "Mouse move filtered out: "+str(self.press_timestamp-self.release_timestamp)
+                log_object["filter"] = "Mouse move filtered out (press < release): "+str(self.press_timestamp-self.release_timestamp)
                 self.event_log( log_object )
                 return True
+            if(event_timestamp - self.release_timestamp < self.move_after_release_min):
+                log_object["filter"] = "Mouse move filtered out (event - release < delay): "+str(event_timestamp - self.release_timestamp)
+                self.event_log( log_object )
+                return True
+            if(event_timestamp - self.press_timestamp < self.move_after_press_min):
+                log_object["filter"] = "Mouse move filtered out (event - press < delay): "+str(event_timestamp - self.press_timestamp)
+                self.event_log( log_object )
+                return True
+
+
         if event.type() == QtCore.QEvent.HoverMove or event.type() == QtCore.QEvent.IconDrag:
             log_object["filter"] = "HoverMove IconDrag or filtered out: "
             self.event_log( log_object )
