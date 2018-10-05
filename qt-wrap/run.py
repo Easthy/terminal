@@ -5,9 +5,6 @@ from functools import partial
 from datetime import datetime
 import json
 
-import signal
-signal.signal(signal.SIGINT, signal.SIG_DFL)
-
 from PyQt5 import *
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QEvent, pyqtSlot, pyqtSignal
@@ -105,10 +102,10 @@ class Terminal(QMainWindow):
         }
         self.event_log( log_object )
 
-        if cursor_x < self.cursor_x_min or cursor_x > self.cursor_x_max or cursor_y < self.cursor_y_min or cursor_y > self.cursor_y_max:
-            log_object["filter"] = 'Edges filtered out'
-            self.event_log( log_object )
-            return True
+        # if cursor_x < self.cursor_x_min or cursor_x > self.cursor_x_max or cursor_y < self.cursor_y_min or cursor_y > self.cursor_y_max:
+        #     log_object["filter"] = 'Edges filtered out'
+        #     self.event_log( log_object )
+        #     return True
 
         if event.type() == QtCore.QEvent.MouseButtonPress:
             if ( self.release_timestamp > 0 and event_timestamp - self.release_timestamp < self.press_min_pause ):
