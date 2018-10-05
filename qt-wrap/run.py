@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
-
+import os 
 import sys
+from functools import partial
+from datetime import datetime
+import json
+
 from PyQt5 import *
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QEvent, pyqtSlot, pyqtSignal
@@ -8,9 +12,6 @@ from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, qApp, QApplication, Q
 from PyQt5.QtGui import QIcon, QKeyEvent, QKeySequence, QFont
 from PyQt5 import QtWebEngineWidgets
 from PyQt5.QtWebChannel import QWebChannel
-from functools import partial
-from datetime import datetime
-import json
 
 class Terminal(QMainWindow):
     host_method = {
@@ -48,7 +49,6 @@ class Terminal(QMainWindow):
         self.wgt.setLayout(self.main_layout)
         self.wgt.setContextMenuPolicy(QtCore.Qt.PreventContextMenu)
 
-
         self.page = self.webView.page()
         # self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.DeveloperExtrasEnabled, True)
         # <script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
@@ -78,7 +78,10 @@ class Terminal(QMainWindow):
         settings = self.load_settings()
 
     def load_settings(self):
-        settings_path = 'settings.json'
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        settings_path = dir_path+'settings.json'
+        if ( not os.path.isfile(settings_path) ):
+            return False
         with open( settings_path, 'r') as f:
             settings = json.loads(f.read())
             for k,v in settings.items():
