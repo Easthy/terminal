@@ -82,7 +82,7 @@ class Terminal(QMainWindow):
 
     def load_settings(self):
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        settings_path = dir_path+'settings.json'
+        settings_path = dir_path+'/settings.json'
         if ( not os.path.isfile(settings_path) ):
             print('Settings file not found')
             return False
