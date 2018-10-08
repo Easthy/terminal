@@ -1,5 +1,9 @@
 window.Terminal = {};
 $(function() {
+    // Extract GET variable
+    window.getURLParameters = function getURLParameters(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
+    }
 	// Date and time updater
 	Terminal.clock = function(){
 		var month_names = ["Января", "Февраля", "Марта", "Апреля", "Мая", "Июня","Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"];
@@ -56,27 +60,18 @@ $(function() {
 			'left'				: 0
 		});
 	};
-	Terminal.screensaver.redirect = function(){
-		localStorage.setItem('time_inactive',0);
-		window.location.href = '/';
-	}
+	var activate_screensaver = getURLParameters('activate_screensaver');
 	Terminal.screensaver.start = function(){
-		console.log( Terminal.screensaver.time_inactive );
-		if (localStorage.getItem('time_inactive')==0){
+		if (activate_screensaver==1){
 			Terminal.screensaver.getScreensaver().done(function(sa){
 				console.log(sa.screensaver);
 				Terminal.screensaver.setScreensaver(sa.screensaver);
-				localStorage.removeItem('time_inactive');
+				activate_screensaver = 0;
 			});
 			return;
 		}
 
 		Terminal.screensaver.timer = setTimeout(function(){
-			Terminal.screensaver.time_inactive--;
-			if ( Terminal.screensaver.time_inactive <= 0 ){
-				Terminal.screensaver.redirect();
-				return;
-			}
 			Terminal.screensaver.start();
 		},1000);
 	};
@@ -89,14 +84,9 @@ $(function() {
 		Terminal.screensaver.time_inactive = Terminal.screensaver.time_wait;
 	};
 	$(document).on('tap','#screensaver:visible',function(){
-		Terminal.screensaver.start();
 		$('#screensaver').hide();
-	});
-	$(document).on('tap','html',function(){
-		Terminal.screensaver.reset();
-	});
-	$('html').mousemove(function(){
-		Terminal.screensaver.reset();
+		activate_screensaver = 0;
+		Terminal.screensaver.start();
 	});
 	// Start screensavers
 	Terminal.screensaver.start();

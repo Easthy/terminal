@@ -8,7 +8,7 @@ import json
 from PyQt5 import *
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QEvent, pyqtSlot, pyqtSignal
-from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, qApp, QApplication, QPushButton, QFrame, QSplitter, QVBoxLayout
+from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QApplication, QPushButton, QVBoxLayout
 from PyQt5.QtGui import QIcon, QKeyEvent, QKeySequence, QFont
 from PyQt5 import QtWebEngineWidgets
 from PyQt5.QtWebChannel import QWebChannel
@@ -52,6 +52,7 @@ class Terminal(QMainWindow):
         self.page = self.webView.page()
         # self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.DeveloperExtrasEnabled, True)
         # <script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
+        self.page.profile().clearHttpCache()
         self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.JavascriptEnabled, True)
         self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.AllowRunningInsecureContent, True)
         # self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.ShowScrollBars, True)
@@ -80,7 +81,24 @@ class Terminal(QMainWindow):
         self.cursor_x = 0
         self.cursor_y = 0
         self.press_release_distance = 500
-        settings = self.load_settings()
+        self.screen_saver_delay = 60000
+        self.load_settings()
+
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self.setScreensaver)
+        self.resetTimer()
+
+    def setScreensaver(self):
+        script = "window.location.href = '"+self.pages['home']+"/?activate_screensaver=1'"
+        self.webView.page().runJavaScript( script )
+        self.stopTimer()
+
+    def resetTimer(self):
+        self.timer.setInterval(self.screen_saver_delay)
+        self.timer.start()
+
+    def stopTimer(self):
+        self.timer.stop()
 
     def load_settings(self):
         dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -107,10 +125,10 @@ class Terminal(QMainWindow):
             "cursor_y": cursor_y
         }
 
-        if cursor_x < self.cursor_x_min or cursor_x > self.cursor_x_max or cursor_y < self.cursor_y_min or cursor_y > self.cursor_y_max:
-            log_object["filter"] = 'Edges filtered out'
-            self.event_log( log_object )
-            return True
+        # if cursor_x < self.cursor_x_min or cursor_x > self.cursor_x_max or cursor_y < self.cursor_y_min or cursor_y > self.cursor_y_max:
+            # log_object["filter"] = 'Edges filtered out'
+            # self.event_log( log_object )
+            # return True
 
         if event.type() == QtCore.QEvent.MouseButtonPress:
             if ( self.release_timestamp > 0 and event_timestamp - self.release_timestamp < self.press_min_pause ):
@@ -135,6 +153,7 @@ class Terminal(QMainWindow):
             self.release_timestamp = event_timestamp
             log_object["event"] = "Mouse released: "+str(event_timestamp - self.press_timestamp)
             self.event_log( log_object )
+            self.resetTimer()
 
 
         if event.type() == QtCore.QEvent.MouseMove:
@@ -171,7 +190,7 @@ class Terminal(QMainWindow):
     def disableSelection(self):
         style = '-webkit-touch-callout: none; -webkit-user-select: none; user-select: none;'
         script = "document.querySelector('html').setAttribute('style','%s')" %(style)
-        self.webView.page().runJavaScript( script );
+        self.webView.page().runJavaScript( script )
 
     def afterPageLoad(self):
         Qurl = self.webView.url()
@@ -198,6 +217,7 @@ class Terminal(QMainWindow):
         qt_key = getattr(QtCore.Qt, ch)
         self.event = QKeyEvent(QEvent.KeyPress, qt_key, modifiers, QKeySequence(qt_key).toString() )
         QApplication.postEvent(recipient, self.event)
+        self.resetTimer()
 
 class CustomPushButton(QPushButton):
     def __init__(self, Text, symbol, parent = None):
