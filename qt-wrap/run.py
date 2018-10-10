@@ -11,7 +11,7 @@ from PyQt5.QtCore import QEvent, pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QApplication, QPushButton, QVBoxLayout
 from PyQt5.QtGui import QIcon, QKeyEvent, QKeySequence, QFont
 from PyQt5 import QtWebEngineWidgets
-from PyQt5.QtWebChannel import QWebChannel
+# from PyQt5.QtWebChannel import QWebChannel
 
 class Terminal(QMainWindow):
     host_method = {
@@ -87,6 +87,8 @@ class Terminal(QMainWindow):
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.setScreensaver)
         self.resetTimer()
+
+        self.last_host = False
 
     def setScreensaver(self):
         script = "window.location.href = '"+self.pages['home']+"/?activate_screensaver=1'"
@@ -197,7 +199,11 @@ class Terminal(QMainWindow):
         host = Qurl.host()
         path = Qurl.path()
         location = host + path
+        if self.last_host != host:
+            print('Removing cookies')
+            self.page.profile().cookieStore().deleteAllCookies()
         print('Page loaded: ' + str(host) + str(path) )
+        self.last_host = host
         if host in self.host_method:
             print('Calling host specific methods: '+str(host))
             getattr(self,self.host_method[host])() 
