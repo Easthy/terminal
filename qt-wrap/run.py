@@ -10,7 +10,7 @@ from PyQt5 import Qt, QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QEvent, pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QApplication, QPushButton, QVBoxLayout
 from PyQt5.QtGui import QIcon, QKeyEvent, QKeySequence, QFont
-from PyQt5 import QtWebEngineWidgets
+from PyQt5 import QtWebEngineWidgets, QtNetwork
 # from PyQt5.QtWebChannel import QWebChannel
 
 class Terminal(QMainWindow):
@@ -18,7 +18,7 @@ class Terminal(QMainWindow):
         "emias.info": 'showKeyboard'
     }
     pages = {
-        "home": "http://test-terminal"
+        "home": "https://test-terminal"
     }
     def __init__(self):
         super().__init__()
@@ -29,7 +29,7 @@ class Terminal(QMainWindow):
         self.statusBar().hide()
         self.setObjectName("MainWindow")
        
-        self.webView = QtWebEngineWidgets.QWebEngineView()
+        self.webView = WebEngineView() #QtWebEngineWidgets.QWebEngineView()
         self.openPage(self.pages['home'])
         self.webView.setObjectName("webView")
         self.webView.setAttribute(QtCore.Qt.WA_AcceptTouchEvents, True)
@@ -62,6 +62,7 @@ class Terminal(QMainWindow):
         self.webView.loadStarted.connect(self.hideKeyboard) # loadStarted
         self.webView.loadFinished.connect(self.disableSelection)
         self.webView.loadFinished.connect(self.afterPageLoad)
+        # self.webView.certificateError.connect(self.afterPageLoad)
         # self.webView.triggerPageAction(self.afterPageLoad)
         self.DigitKeyboard.keyClick.connect(self.clickHandler)
         self.DigitKeyboard.homeClick.connect(partial(self.openPage,self.pages['home']))
@@ -174,7 +175,6 @@ class Terminal(QMainWindow):
 
         return False
 
-
     def event_log(self,d):
         self.save_file('events.log',"\n"+json.dumps(d))
 
@@ -224,6 +224,24 @@ class Terminal(QMainWindow):
         self.event = QKeyEvent(QEvent.KeyPress, qt_key, modifiers, QKeySequence(qt_key).toString() )
         QApplication.postEvent(recipient, self.event)
         self.resetTimer()
+
+class WebEngineView(QtWebEngineWidgets.QWebEngineView):
+    """Custom QWebEngineView subclass"""
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setPage(WebEnginePage(parent=self))
+
+class WebEnginePage(QtWebEngineWidgets.QWebEnginePage):
+    """Custom QWebEnginePage subclass with qutebrowser-specific features.
+    """
+    certificate_error = pyqtSignal()
+    link_clicked = pyqtSignal(QtCore.QUrl)
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        
+    def certificateError(self, error):
+        print('*******************************');
+        return True
 
 class CustomPushButton(QPushButton):
     def __init__(self, Text, symbol, parent = None):

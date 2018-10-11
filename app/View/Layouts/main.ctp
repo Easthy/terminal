@@ -65,7 +65,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 					<span id="clock"></span>
 					
 				</span>
-				<span class="text-right">
+				<span class="text-right" onClick="window.location.href='/home/webcam'" style="cursor:pointer;">
 					23 C
 					<?php //echo $this->getTemperature(); ?>
 				</span>

@@ -73,4 +73,9 @@ class HomeController extends AppController {
 		}
 		echo json_encode(array('screensaver'=>$screensaver));
 	}
+
+	public function webcam(){
+		$this->layout = 'main';
+		
+	}
 }
