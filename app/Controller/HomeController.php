@@ -75,7 +75,12 @@ class HomeController extends AppController {
 	}
 
 	public function webcam(){
-		$this->layout = 'main';
-		
+		$this->layout = 'main';	
+	}
+
+	public function save_video(){
+		$this->render('/Layouts/ajax', 'ajax');
+
+		debug( $this->request );
 	}
 }

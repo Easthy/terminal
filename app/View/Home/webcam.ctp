@@ -10,7 +10,10 @@
   <style>
   /* change player background color */
   #myVideo {
-      background-color: #9ab87a;
+      background-color: #00007a;
+      width: 950px;
+      height: 800px;
+      margin: 65px 0 0 15px;
   }
   </style>
 
@@ -59,5 +62,33 @@ player.on('finishRecord', function() {
     // the blob object contains the recorded data that
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording: ', player.recordedData);
+    upload_video(player.recordedData);
 });
+
+function upload_video(recordedData){
+  if (recordedData) {
+    
+    var binaryData = recordedData.video;
+
+    var segmentNumber = 0;
+    segmentNumber++;
+
+    var formData = new FormData();
+    formData.append('SegmentNumber', segmentNumber);
+    formData.append('Data', binaryData);
+    
+    $.ajax({
+        url: '/home/save_video',
+        method: 'POST',
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function (res) {
+            console.log("segment: " + segmentNumber);
+        }
+    });
+  }
+}
+
 </script>
