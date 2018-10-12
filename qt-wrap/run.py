@@ -62,6 +62,7 @@ class Terminal(QMainWindow):
         self.webView.loadStarted.connect(self.hideKeyboard) # loadStarted
         self.webView.loadFinished.connect(self.disableSelection)
         self.webView.loadFinished.connect(self.afterPageLoad)
+        self.webView.page().featurePermissionRequested.connect(self.grantFeatures)
         # self.webView.certificateError.connect(self.afterPageLoad)
         # self.webView.triggerPageAction(self.afterPageLoad)
         self.DigitKeyboard.keyClick.connect(self.clickHandler)
@@ -90,6 +91,9 @@ class Terminal(QMainWindow):
         self.resetTimer()
 
         self.last_host = False
+
+    def grantFeatures(self):
+        self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaAudioVideoCapture, True)
 
     def setScreensaver(self):
         script = "window.location.href = '"+self.pages['home']+"/?activate_screensaver=1'"
@@ -242,6 +246,7 @@ class WebEnginePage(QtWebEngineWidgets.QWebEnginePage):
     def certificateError(self, error):
         print('*******************************');
         return True
+
 
 class CustomPushButton(QPushButton):
     def __init__(self, Text, symbol, parent = None):
