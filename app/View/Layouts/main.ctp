@@ -24,6 +24,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<title>
 		<?php echo $this->fetch('title'); ?>
 	</title>
+	<!-- <script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script> -->
 	<!-- Insert this line above script imports  -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
 	

@@ -93,7 +93,10 @@ class Terminal(QMainWindow):
         self.last_host = False
 
     def grantFeatures(self):
+        print('grant MediaAudioVideoCapture')
         self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaAudioVideoCapture, True)
+        self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaAudioCapture, True)
+        self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaVideoCapture, True)
 
     def setScreensaver(self):
         script = "window.location.href = '"+self.pages['home']+"/?activate_screensaver=1'"

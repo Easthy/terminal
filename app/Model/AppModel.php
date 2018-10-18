@@ -187,4 +187,40 @@ class AppModel extends Model {
             }
         }
     }
+
+    /*
+    Загрузка файла на сервер
+    */
+    public static function uploadFile( $db_file )
+    {
+        $new_name = false;
+        // debug($db_file);
+        foreach ($_FILES AS $field => $file){
+            $file_path = WWW_ROOT.$db_file;
+            if (!$file['error'] && $file['size']){
+                if (!file_exists($file_path)) {
+                    mkdir($file_path, 0777, true);
+                }
+                if (isset($file_path)){
+                    $new_name = CakeText::uuid();
+                    $ext = '.'.pathinfo( $file['name'], PATHINFO_EXTENSION ); // расширение файла
+                    $new_name = "$new_name".$ext;
+                    $f = file_get_contents($file['tmp_name']);
+                    $path = $file_path.$new_name;
+                    if ( !file_exists( $file_path ) ){
+                        mkdir( $file_path, 0777, true );
+                    }
+                    if (file_put_contents($path, $f))
+                        $result[$field] = $path;
+                    else
+                        throw new Exception("Файл {$file['name']} не был корректно сохранен");
+                }
+                else
+                    throw new Exception ("Не найден путь для файла {$file['name']}");
+            }
+            else
+                throw new Exception("Файл {$file['name']} не был корректно загружен из формы");
+        }
+        return $new_name;
+    }
 }

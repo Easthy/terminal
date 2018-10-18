@@ -81,6 +81,8 @@ class HomeController extends AppController {
 	public function save_video(){
 		$this->render('/Layouts/ajax', 'ajax');
 
+		$this->log($_FILES);
+		AppModel::uploadFile('tmp/video/');
 		debug( $this->request );
 	}
 }
