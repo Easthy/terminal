@@ -1,14 +1,14 @@
 {
-	"credentials": {"email":"updater@thyloved.ru","password":"H4TiO4","remember_me":false},
+	"credentials": {"email":"update@thyloved.ru","password":"infomat","remember_me":false},
 	"storage_base_path": "/home/tolik/Yandex/7_job/Терминал/updater/file_cache",
 	"updater_sql_path": "/home/tolik/Yandex/7_job/Терминал/updater/sql/updater.sql",
 	"file_root_path": "/home/tolik/Yandex/7_job/Терминал/updater",
 	"file_url": "http://test-terminal",
 	"user_agent": "infomat-updater",
-	"base_url": "http://test-dreamfactory",
+	"base_url": "http://dreamfactory.thyloved.ru",
 	"api_url": "api/v2",
 	"auth_service": "user/session",
-	"api_key": "6498a8ad1beb9d84d63035c5d1120c007fad6de706734db9689f8996707e0f7d",
+	"api_key": "61ce890636c64edbe17ae38e04698ee9d8bb1c9c17a961aac75d63e6108f6616",
 	"infomat_id": "1",
 	"infomat_db": {
 		"host": "localhost",

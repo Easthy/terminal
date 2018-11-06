@@ -33,7 +33,7 @@
     recorder.startRecording();
 
     // auto stop recording after 300 seconds (5 minutes)
-    var milliSeconds = 300 * 1000;
+    var milliSeconds = 30 * 1000;
     setTimeout(
         function() {
             // stop recording
