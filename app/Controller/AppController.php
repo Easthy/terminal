@@ -37,6 +37,11 @@ class AppController extends Controller {
 			$this->loadModel('Agency');
 			$agency_id = array(Configure::read('Terminal')['agency_id']);
 			$agency = $this->Agency->get_data('get_agency_information',array('agency_id'=>AppModel::toPgArray($agency_id)),'extract');
+			if(empty($agency)){
+				echo "Agency could not be found!
+				Check settings file and database.";
+				exit();
+			}
 			$this->Session->write('Agency',$agency[0]);
 		}
 		// $current_date = AppModel::get_current_date_time();
