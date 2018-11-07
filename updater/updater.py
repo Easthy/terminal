@@ -6,16 +6,28 @@ import subprocess
 import logging
 import signal
 import hashlib
+import atexit
+
+class UpdaterError(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+        up = Updater()
+        up.errors.append(message)
+        up.slack_notificate()
 
 class Updater:
     DS = '/'
     dir_path = os.path.dirname(os.path.realpath(__file__))
     settings_file = 'settings.json'
+    errors = []
 
     def __init__(self):
+        atexit.register(self.on_exit)
         settings_path = self.dir_path + self.DS + self.settings_file
         if not os.path.isfile(settings_path):
-            raise Exception('Settings file must be placed at directory of updater!')
+            error = 'Settings file must be placed at directory of updater!'
+            self.errors.append(error)
+            raise Exception(error)
 
         with open( settings_path, 'r') as f:
             self.settings = json.loads(f.read())
@@ -26,12 +38,29 @@ class Updater:
         f.close()
 
         if not os.path.isfile(self.settings["updater_sql_path"]):
-            raise Exception('There is no table updater sql file')
+            error = 'There is no table updater sql file'
+            self.errors.append(error)
+            raise Exception(error)
 
         with open( self.settings["updater_sql_path"], 'r') as f:
             self.updater_sql = f.read()
         f.close()
 
+    def on_exit(self):
+        self.slack_notificate()
+
+    def slack_notificate(self):
+        header = 'Infomat ID '+self.settings['infomat_id']
+        message = 'Success'
+        color = 'good'
+        if self.errors:
+            color = 'warning'
+            message = "\n".join(self.errors)
+
+        response = requests.post(
+            self.settings["slack_webhook_url"], data=json.dumps({'text': header, "attachments": [{"color": color, "text": message}]}),
+            headers={'Content-Type': 'application/json'}
+        )
 
     def db_connect(self):
         """ Connect to the PostgreSQL database server """
@@ -39,15 +68,14 @@ class Updater:
         try:
             # read connection parameters
             params = self.settings['infomat_db']
-     
             # connect to the PostgreSQL server
             return psycopg2.connect(**params)
         except (Exception, psycopg2.DatabaseError) as error:
-            print(error)
+            self.errors.append(str(error))
+            raise Exception(str(error))
         finally:
             if conn is not None:
                 conn.close()
-                print('Database connection closed.')
 
     def auth(self):
         auth_url = self.settings['base_url'] + self.DS + self.settings['api_url'] + self.DS + self.settings['auth_service']
@@ -55,7 +83,9 @@ class Updater:
         auth_data = json.dumps(self.settings['credentials'])
         auth_response = requests.post(auth_url, data=auth_data, headers=auth_headers)
         if auth_response.status_code != 200:
-            raise Exception('Authentication failed!')
+            error = 'Dreamfactory authentication failed!'
+            self.errors.append(error)
+            raise Exception(error)
         auth_content = json.loads(auth_response.content.decode('utf-8'))
         self.session_token = auth_content['session_token']
 
@@ -99,8 +129,6 @@ class Updater:
                     cwd=self.settings['sh_folder'], shell=True
                 )
                 proc.wait()
-                # os.kill(proc.pid, signal.SIGTERM)
-                # remove shell script after execution
                 os.remove(sh_file_path)
                 # mark shell script executed
                 self.query_service(
@@ -126,7 +154,9 @@ class Updater:
             headers=query_headers
         )
         if response.status_code != 200:
-            raise Exception('Quering table "' +table+ '" failed!\n'+response.content.decode('utf-8'))
+            error = 'Dreamfactory quering table "' +table+ '" failed!\n'+response.content.decode('utf-8')
+            self.errors.append(error)
+            raise Exception(error)
         return json.loads(response.content.decode('utf-8'))
 
     def get_query_headers(self):
@@ -176,12 +206,14 @@ class Updater:
         full_path = self.settings['storage_base_path'] + self.DS + table + '.json'
         if not os.path.exists(self.settings['storage_base_path']):
             os.mkdir(self.settings['storage_base_path'])
-        f = open(full_path, "wb")
-        # f.write( json.dumps(data['resource'], ensure_ascii=False) )
-        # f.write( json.dumps(data['resource'], separators=(',', ':')) )
-        f.write( json.dumps(data['resource']).encode("unicode_escape") )
-        # f.write( json.dumps(data['resource']).encode("unicode_escape").decode("utf-8") )
-        f.close()
+        try:
+            f = open(full_path, "wb")
+            f.write( json.dumps(data['resource']).encode("unicode_escape") )
+            f.close()
+        except(Exception) as e:
+            error = str(e)
+            self.errors.append(error)
+            raise Exception(error)
 
     def update_table(self,table):
         """
@@ -189,7 +221,9 @@ class Updater:
         """
         full_path = self.settings['storage_base_path'] + self.DS + table + '.json'
         if not os.path.isfile(full_path):
-            raise Exception('JSON updater file is not exists')
+            error = 'JSON updater file is not exists'
+            self.errors.append(error)
+            raise Exception(error)
 
         sql = self.updater_sql.format(
             updater_json_file = full_path,
@@ -220,10 +254,11 @@ class Updater:
     def download_files(self,table):
         full_path = self.settings['storage_base_path'] + self.DS + table + '.json'
         if not 'files' in self.settings["tables"][table]:
-            print("No file path specified. Skipping")
+            logging.info("No file path for table "+table+" specified. Skipping")
             return
         if not os.path.exists(full_path):
-            print("File cache does not exist. Skipping")
+            error = "File cache for table "+table+" does not exist. Skipping"
+            self.errors.append(error)
             return
 
         for file_path in self.settings["tables"][table]["files"]:
@@ -232,20 +267,19 @@ class Updater:
             if files:
                 for file in files:
                     path = self.DS+self.settings['file_root_path']+self.DS+file
-                    # print(path)
-                    # print(os.path.exists(path))
-                    # print(os.path.isfile(path))
                     if os.path.exists(path) and os.path.isfile(path):
-                        print('File exists. Skipping')
+                        logging.info('File exists. Skipping')
                         continue
                     f = requests.get(self.settings['file_url']+self.DS+file).content
                     self.save_file(path,f)
+
 
 
 up = Updater()
 up.auth()
 up.run_shell_instructions()
 tables = up.get_table_list()
+
 # Fill file_cache
 for table,params in tables.items():
     response = up.query_service(table,params['service'],params["query_params"])
@@ -258,4 +292,3 @@ for table,params in tables.items():
 # Update tables
 for table,params in tables.items():
     up.update_table(table)
-    
