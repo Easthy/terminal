@@ -107,7 +107,7 @@ class Updater:
         )
         if shell_scripts['resource']:
             for sh in shell_scripts['resource']:
-                sh_file_path = self.dir_path + self.DS + self.settings['sh_folder'] + self.DS + sh['sh_name'] + '#' + str(sh['id']) + '.sh'
+                sh_file_path = self.DS.join([self.dir_path,self.settings['sh_folder'],sh['sh_name']]) + '#' + str(sh['id']) + '.sh'
                 f = open(sh_file_path, "w")
                 f.write( sh['sh_code'] )
                 f.close()
@@ -118,11 +118,11 @@ class Updater:
         Executes files located at the directory "script" with extension ".sh" as shell scripts.
         After execution shell scripts will be deleted and marked as "executed" via "patch" request to dreamfactory service
         """
-        for file in os.listdir(self.settings['sh_folder']):
+        for file in os.listdir( self.DS.join([self.dir_path,self.settings['sh_folder']]) ):
             if file.endswith(".sh"):
                 # shell script id parsing from the shell script name
                 sh_id = os.path.splitext(file)[0].split('#')[1]
-                sh_file_path = self.dir_path + self.DS + self.settings['sh_folder'] + self.DS + file
+                sh_file_path = self.DS.join([self.dir_path,self.settings['sh_folder'],file])
                 # run shell script
                 proc = subprocess.Popen(
                     [sh_file_path], 
