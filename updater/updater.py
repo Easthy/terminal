@@ -81,7 +81,12 @@ class Updater:
         auth_url = self.settings['base_url'] + self.DS + self.settings['api_url'] + self.DS + self.settings['auth_service']
         auth_headers = self.get_query_headers()
         auth_data = json.dumps(self.settings['credentials'])
-        auth_response = requests.post(auth_url, data=auth_data, headers=auth_headers)
+        try:
+            auth_response = requests.post(auth_url, data=auth_data, headers=auth_headers)
+        except (Exception) as error:
+            self.errors.append(str(error))
+            raise Exception(str(error))
+
         if auth_response.status_code != 200:
             error = 'Dreamfactory authentication failed!'
             self.errors.append(error)
@@ -90,11 +95,14 @@ class Updater:
         self.session_token = auth_content['session_token']
 
     def run_shell_instructions(self):
-        if not os.path.exists(self.dir_path + self.DS + self.settings['sh_folder']):
-            os.mkdir(self.dir_path + self.DS + self.settings['sh_folder'])
-
-        self.download_shell_script()
-        self.execute_shell_script()
+        if not os.path.exists( self.DS.join([self.dir_path, self.settings['sh_folder']]) ):
+            os.mkdir( self.DS.join([self.dir_path, self.settings['sh_folder']]) )
+        try:
+            self.download_shell_script()
+            self.execute_shell_script()
+        except (Exception) as error:
+            self.errors.append(str(error))
+            raise Exception(str(error))
 
     def download_shell_script(self):
         """
@@ -118,11 +126,11 @@ class Updater:
         Executes files located at the directory "script" with extension ".sh" as shell scripts.
         After execution shell scripts will be deleted and marked as "executed" via "patch" request to dreamfactory service
         """
-        for file in os.listdir( self.DS.join([self.dir_path,self.settings['sh_folder']]) ):
+        for file in os.listdir( self.DS.join([self.dir_path, self.settings['sh_folder']]) ):
             if file.endswith(".sh"):
                 # shell script id parsing from the shell script name
                 sh_id = os.path.splitext(file)[0].split('#')[1]
-                sh_file_path = self.DS.join( [self.dir_path,self.settings['sh_folder'],file] )
+                sh_file_path = self.DS.join( [self.dir_path, self.settings['sh_folder'], file] )
                 # run shell script
                 proc = subprocess.Popen(
                     [sh_file_path], 
@@ -146,13 +154,19 @@ class Updater:
         """
         query_url = self.get_query_url(table,service,params)
         query_headers = self.get_query_headers()
-        response = requests.request(
-            method, 
-            query_url, 
-            data=data,
-            json=json_params, 
-            headers=query_headers
-        )
+
+        try:
+            response = requests.request(
+                method, 
+                query_url, 
+                data=data,
+                json=json_params, 
+                headers=query_headers
+            )
+        except (Exception) as error:
+            self.errors.append(str(error))
+            raise Exception(str(error))
+
         if response.status_code != 200:
             error = 'Dreamfactory quering table "' +table+ '" failed!\n'+response.content.decode('utf-8')
             self.errors.append(error)
