@@ -224,6 +224,10 @@ class AppModel extends Model {
         return $new_name;
     }
 
+    public static function get_agency_id(){
+        return CakeSession::read('Agency.id');
+    }
+
     public static function json_decode_escaped($input){
         $output = json_decode($input,JSON_UNESCAPED_SLASHES);
         if ( gettype($output) === 'string' ){

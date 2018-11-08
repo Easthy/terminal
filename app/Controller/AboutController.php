@@ -58,10 +58,11 @@ class AboutController extends AppController {
 		$affiliate_id = $this->Agency->get_data('get_agency_affiliate',array('agency_id'=>Configure::read('Terminal')['agency_id']));
 		$affiliate_id = HASH::extract($affiliate_id,'{n}.{n}.id');
 		$affiliates = $this->Agency->get_data('get_agency_information',array('agency_id'=>AppModel::toPgArray($affiliate_id)),'extract');
-		$agency = CakeSession::read('Agency');
+		$agency_id = AppModel::get_agency_id();
+		$agency = $this->Agency->get_data('get_agency_information',array('agency_id'=>AppModel::toPgArray($agency_id)),'extract')[0];
 		$agency['logo'] = '/img/tmp/company_logo_1.png';
 		array_unshift($affiliates, $agency);
-		$this->Agency->format_timetables($affiliates);
+		// $this->Agency->format_timetables($affiliates);
 		$this->Agency->format_timetable($agency);
 		$this->set('affiliates',$affiliates);
 		$this->set('agency',$agency);
