@@ -122,7 +122,7 @@ class Updater:
             if file.endswith(".sh"):
                 # shell script id parsing from the shell script name
                 sh_id = os.path.splitext(file)[0].split('#')[1]
-                sh_file_path = self.DS.join([self.dir_path,self.settings['sh_folder'],file])
+                sh_file_path = self.DS.join( [self.dir_path,self.settings['sh_folder'],file] )
                 # run shell script
                 proc = subprocess.Popen(
                     [sh_file_path], 
