@@ -102,7 +102,7 @@
 						<span class="text-blue-small-thick">Условия предоставления</span>
 					</div>
 					<table class="service-table">
-						<?php foreach(json_decode($service[0]['chargeable_type'],true) as $key => $chargeable_type):?>
+						<?php foreach(AppModel::json_decode_escaped($service[0]['chargeable_type'],true) as $key => $chargeable_type):?>
 							<tr>
 								<td>
 									<span class="text-grey-small">
@@ -112,7 +112,7 @@
 								<td>
 									<span class="text-black-small-thin">
 										<?
-											$factor = json_decode($service[0]['chargeable_type_factor'],true);
+											$factor = AppModel::json_decode_escaped($service[0]['chargeable_type_factor'],true);
 											$price = '-';
 											if( mb_strtolower($chargeable_type) != 'бесплатно' ){
 												$price = ($service[0]['price']*$factor[$key]).'₽';
@@ -133,7 +133,7 @@
 					<div class="tab-header">
 						<span class="text-blue-small-thick">Ресурсы учреждения</span>
 					</div>
-					<?php foreach( json_decode($service[0]['agency_resources'],true) as $key => $item):?>
+					<?php foreach( AppModel::json_decode_escaped($service[0]['agency_resources'],true) as $key => $item):?>
 						<div class="text-black-small-thin">
 							<?=$key+1?>. <?=$item?>
 						</div>
@@ -147,7 +147,7 @@
 					<div class="tab-header">
 						<span class="text-blue-small-thick">Ресурсы клиента</span>
 					</div>
-					<?php foreach( json_decode($service[0]['client_resources'],true) as $key => $item):?>
+					<?php foreach( AppModel::json_decode_escaped($service[0]['client_resources'],true) as $key => $item):?>
 						<div class="text-black-small-thin">
 							<?=$key+1?>. <?=$item?>
 						</div>
@@ -162,7 +162,7 @@
 						<span class="text-blue-small-thick">Регламент</span>
 					</div>
 					<p class="text-grey-small">Порядок выполнения:</p>
-					<?php foreach( json_decode($service[0]['description'],true) as $key => $item):?>
+					<?php foreach( AppModel::json_decode_escaped($service[0]['description'],true) as $key => $item):?>
 						<div class="text-black-small-thin">
 							<?=$key+1?>. <?=$item?>
 						</div>

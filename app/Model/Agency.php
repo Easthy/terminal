@@ -61,7 +61,7 @@ class Agency extends AppModel {
         if( empty($agency['timetable']) ){
             return false;
         }
-        $timetable = json_decode($agency['timetable'],true);
+        $timetable = AppModel::json_decode_escaped($agency['timetable'],true);
         $wds = array_keys($this->week_dictionary);
         foreach ($wds as $wd) {
             if ( !empty($timetable[$wd]) ){
