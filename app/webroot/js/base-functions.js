@@ -6,7 +6,7 @@ $(function() {
     }
 	// Date and time updater
 	Terminal.clock = function(){
-		var month_names = ["Января", "Февраля", "Марта", "Апреля", "Мая", "Июня","Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"];
+		var month_names = ["Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"];
 		var date = new Date();
 		var hours = date.getHours();
 		var minutes = date.getMinutes();
@@ -19,7 +19,7 @@ $(function() {
 		var time = hours + ':' + minutes;
 		
 		var year = date.getFullYear();
-		var month = date.getMonth() + 1;
+		var month = date.getMonth();
 		var day = date.getDate();
 		if (month < 10) 
 			month = month;
