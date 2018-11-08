@@ -191,15 +191,7 @@ class Updater:
         """
         Forming query url
         """
-        url = self.settings['base_url'] + \
-              self.DS + \
-              self.settings['api_url'] + \
-              self.DS + \
-              service + \
-              self.DS + \
-              '_table' + \
-              self.DS + \
-              table
+        url = self.DS.join( [self.settings['base_url'], self.settings['api_url'], service, '_table', table] )
         query = self.get_query_params(params)
         return '?'.join([url,query])
 
