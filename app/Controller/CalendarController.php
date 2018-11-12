@@ -69,7 +69,7 @@ class CalendarController extends AppController {
 					$active_days[$m][] = $d;
 				}
 			}
-			$active_days = array_unique($active_days);
+			$active_days = array_map("array_unique", $active_days);
 		}
 		$this->set('active_days', json_encode($active_days, JSON_PRETTY_PRINT));
 		// debug($activities);exit();
