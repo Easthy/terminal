@@ -11,7 +11,7 @@ from PyQt5.QtCore import QEvent, pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QApplication, QPushButton, QVBoxLayout
 from PyQt5.QtGui import QIcon, QKeyEvent, QKeySequence, QFont
 from PyQt5 import QtWebEngineWidgets, QtNetwork
-# from PyQt5.QtWebChannel import QWebChannel
+
 
 class Terminal(QMainWindow):
     host_method = {
@@ -29,7 +29,7 @@ class Terminal(QMainWindow):
         self.statusBar().hide()
         self.setObjectName("MainWindow")
        
-        self.webView = WebEngineView() #QtWebEngineWidgets.QWebEngineView()
+        self.webView = WebEngineView()
         self.openPage(self.pages['home'])
         self.webView.setObjectName("webView")
         self.webView.setAttribute(QtCore.Qt.WA_AcceptTouchEvents, True)
@@ -50,21 +50,17 @@ class Terminal(QMainWindow):
         self.wgt.setContextMenuPolicy(QtCore.Qt.PreventContextMenu)
 
         self.page = self.webView.page()
-        # self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.DeveloperExtrasEnabled, True)
-        # <script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
         self.page.profile().clearHttpCache()
         self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.JavascriptEnabled, True)
         self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.AllowRunningInsecureContent, True)
-        # self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.ShowScrollBars, True)
         self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
 
         self.show()
-        self.webView.loadStarted.connect(self.hideKeyboard) # loadStarted
+        self.webView.loadStarted.connect(self.hideKeyboard)
         self.webView.loadFinished.connect(self.disableSelection)
         self.webView.loadFinished.connect(self.afterPageLoad)
         self.webView.page().featurePermissionRequested.connect(self.grantFeatures)
-        # self.webView.certificateError.connect(self.afterPageLoad)
-        # self.webView.triggerPageAction(self.afterPageLoad)
+
         self.DigitKeyboard.keyClick.connect(self.clickHandler)
         self.DigitKeyboard.homeClick.connect(partial(self.openPage,self.pages['home']))
         self.webView.focusProxy().installEventFilter(self)
@@ -83,7 +79,7 @@ class Terminal(QMainWindow):
         self.cursor_x = 0
         self.cursor_y = 0
         self.press_release_distance = 500
-        self.screen_saver_delay = 60000
+        self.screen_saver_delay = 3000
         self.load_settings()
 
         self.timer = QtCore.QTimer()
@@ -93,7 +89,6 @@ class Terminal(QMainWindow):
         self.last_host = False
 
     def grantFeatures(self):
-        print('grant MediaAudioVideoCapture')
         self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaAudioVideoCapture, True)
         self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaAudioCapture, True)
         self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaVideoCapture, True)
@@ -128,56 +123,32 @@ class Terminal(QMainWindow):
         cursor_y = cursor.pos().y()
         event_timestamp = datetime.utcnow().timestamp()
         readable_event_timestamp = datetime.utcfromtimestamp(event_timestamp).strftime('%Y-%m-%d %H:%M:%S.%f')
-        log_object = {
-            "EVENT": event.type(),
-            'event_timestamp': readable_event_timestamp,
-            "cursor_x": cursor_x,
-            "cursor_y": cursor_y
-        }
 
         # if cursor_x < self.cursor_x_min or cursor_x > self.cursor_x_max or cursor_y < self.cursor_y_min or cursor_y > self.cursor_y_max:
-            # log_object["filter"] = 'Edges filtered out'
-            # self.event_log( log_object )
             # return True
 
         if event.type() == QtCore.QEvent.MouseButtonPress:
             if ( self.release_timestamp > 0 and event_timestamp - self.release_timestamp < self.press_min_pause ):
-                log_object["filter"] = 'Press filtered out: ' + str(event_timestamp - self.release_timestamp)
-                self.event_log( log_object )
                 return True
             self.press_timestamp = event_timestamp
             self.cursor_x = cursor_x
             self.cursor_y = cursor_y
-            log_object["event"] = "Mouse pressed: "+str(event_timestamp - self.release_timestamp)
-            self.event_log( log_object )
 
         if event.type() == QtCore.QEvent.MouseButtonRelease:
             if ( event_timestamp - self.press_timestamp < self.press_min_duration or event_timestamp - self.press_timestamp > self.press_max_duration ):
-                log_object["filter"] = 'Release filtered out: ' + str(event_timestamp - self.press_timestamp)
-                self.event_log( log_object )
                 return True
             if ( (cursor_x - self.cursor_x) > self.press_release_distance or (cursor_y - self.cursor_y) > self.press_release_distance ):
-                log_object["filter"] = 'Release filtered out by press_release_distance:'
-                self.event_log( log_object )
                 return True
             self.release_timestamp = event_timestamp
-            log_object["event"] = "Mouse released: "+str(event_timestamp - self.press_timestamp)
-            self.event_log( log_object )
             self.resetTimer()
 
 
         if event.type() == QtCore.QEvent.MouseMove:
-            if(self.press_timestamp<self.release_timestamp):
-                log_object["filter"] = "Mouse move filtered out (press < release): "+str(self.press_timestamp-self.release_timestamp)
-                self.event_log( log_object )
+            if(self.press_timestamp < self.release_timestamp):
                 return True
             if(event_timestamp - self.release_timestamp < self.move_after_release_min):
-                log_object["filter"] = "Mouse move filtered out (event - release < delay): "+str(event_timestamp - self.release_timestamp)
-                self.event_log( log_object )
                 return True
             if(event_timestamp - self.press_timestamp < self.move_after_press_min):
-                log_object["filter"] = "Mouse move filtered out (event - press < delay): "+str(event_timestamp - self.press_timestamp)
-                self.event_log( log_object )
                 return True
 
         return False
@@ -207,7 +178,6 @@ class Terminal(QMainWindow):
         path = Qurl.path()
         location = host + path
         if self.last_host != host:
-            print('Removing cookies')
             self.page.profile().cookieStore().deleteAllCookies()
         print('Page loaded: ' + str(host) + str(path) )
         self.last_host = host
@@ -247,7 +217,6 @@ class WebEnginePage(QtWebEngineWidgets.QWebEnginePage):
         super().__init__(parent)
         
     def certificateError(self, error):
-        print('*******************************');
         return True
 
 

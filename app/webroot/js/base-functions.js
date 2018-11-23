@@ -1,5 +1,14 @@
 window.Terminal = {};
 $(function() {
+	var extensionLists = {}; //Create an object for all extension lists
+	extensionLists.video = ['m4v', 'avi','mpg','mp4', 'webm', 'ogv'];  
+	extensionLists.image = ['jpg', 'gif', 'bmp', 'png', 'jpeg'];
+
+	// One validation function for all file types    
+	window.isValidFileType = function(fName, fType) {
+	    console.log('fName: ',fName,'fType: ',fType);
+	    return extensionLists[fType].indexOf(fName.split('.').pop().toLocaleLowerCase()) > -1;
+	}
     // Extract GET variable
     window.getURLParameters = function getURLParameters(name) {
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
@@ -48,7 +57,16 @@ $(function() {
         });
 	}
 	Terminal.screensaver.setScreensaver = function(src){
-		$('body').append('<div id="screensaver" style="background:url('+src+')"></div>');
+		//
+		var img = isValidFileType(src, 'image');
+		var video_screensaver = '<div id="screensaver">\
+		<video no-controls autoplay loop data-setup="{}">\
+  			<source src="'+src+'">\
+		</video>\
+		</div>';
+		var image_screensaver = '<div id="screensaver" style="background:url('+src+')"></div>';
+		//
+		$('body').append(( img ? image_screensaver : video_screensaver));
 		$('#screensaver').css( {
 			'background-size' 	: 'cover',
 			'display' 			: 'block',
