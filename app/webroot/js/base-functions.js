@@ -72,7 +72,7 @@ $(function() {
 			'display' 			: 'block',
 			'position'			: 'absolute',
 			'z-index'			: 100,
-			'width'				: '1080px',
+			'width'				: '1056px',
 			'height'			: '1920px',
 			'top'				: 0,
 			'left'				: 0
@@ -102,7 +102,7 @@ $(function() {
 		Terminal.screensaver.time_inactive = Terminal.screensaver.time_wait;
 	};
 	$(document).on('tap','#screensaver:visible',function(){
-		$('#screensaver').hide();
+		$('#screensaver').remove();
 		activate_screensaver = 0;
 		Terminal.screensaver.start();
 	});

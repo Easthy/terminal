@@ -28,6 +28,8 @@ class Terminal(QMainWindow):
     def initUI(self):
         self.statusBar().hide()
         self.setObjectName("MainWindow")
+        # Hide window frame
+        # self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
        
         self.webView = WebEngineView()
         self.openPage(self.pages['home'])
@@ -35,7 +37,7 @@ class Terminal(QMainWindow):
         self.webView.setAttribute(QtCore.Qt.WA_AcceptTouchEvents, True)
         
         self.webView.resize(1080, 1920)
-        self.setGeometry(0,0,1080,1920)
+        self.setGeometry(0, 0, 1080, 1920)
         self.resize(1080, 1920)
 
         self.DigitKeyboard = DigitKeyboard()
@@ -89,6 +91,7 @@ class Terminal(QMainWindow):
         self.last_host = False
 
     def grantFeatures(self):
+        """Grant permissions"""
         self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaAudioVideoCapture, True)
         self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaAudioCapture, True)
         self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaVideoCapture, True)
@@ -209,8 +212,7 @@ class WebEngineView(QtWebEngineWidgets.QWebEngineView):
         self.setPage(WebEnginePage(parent=self))
 
 class WebEnginePage(QtWebEngineWidgets.QWebEnginePage):
-    """Custom QWebEnginePage subclass with qutebrowser-specific features.
-    """
+    """Custom QWebEnginePage subclass with ignoring ssl-certificate errors."""
     certificate_error = pyqtSignal()
     link_clicked = pyqtSignal(QtCore.QUrl)
     def __init__(self, parent=None):
@@ -219,8 +221,8 @@ class WebEnginePage(QtWebEngineWidgets.QWebEnginePage):
     def certificateError(self, error):
         return True
 
-
 class CustomPushButton(QPushButton):
+    """Custom buttons"""
     def __init__(self, Text, symbol, parent = None):
         super().__init__(Text, parent)
         self.symbol = symbol
@@ -231,7 +233,6 @@ class CustomPushButton(QPushButton):
         self.symbolClick.emit(self.symbol)
 
     symbolClick = pyqtSignal(str)
-
 
 class DigitKeyboard(QWidget):
     def __init__(self):

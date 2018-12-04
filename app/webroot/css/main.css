@@ -26,7 +26,7 @@ html {
   background: url('../img/main_bg.png') no-repeat no-repeat;
   background-size: cover;
   height: 1920px;
-  width: 1080px;
+  width: 1056px;
   font-family: 'Roboto', sans-serif;
   font-family: 'Open Sans', sans-serif;
   font-weight: 700;
@@ -47,7 +47,7 @@ body {
 #footer {
 	display: table;
     height:97px;
-    width:1080px;
+    width:1056px;
     top:1823px;
     left:0px;
     position:absolute;
@@ -72,7 +72,7 @@ a {
 	padding: 0 65px 0 65px;
     height:1690px;
     max-height: 1690px;
-    width: 1080px;
+    width: 1056px;
     position: absolute;
     top:133px;
     left:0px;
