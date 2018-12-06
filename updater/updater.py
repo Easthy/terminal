@@ -283,8 +283,13 @@ class Updater:
                     if os.path.exists(path) and os.path.isfile(path):
                         logging.info('File exists. Skipping')
                         continue
-                    f = requests.get(self.settings['file_url']+self.DS+file).content
-                    self.save_file(path,f)
+                    f = requests.get(self.settings['file_url']+self.DS+file)
+                    # Check file exists on remote server
+                    if f.status_code != 200:
+                        continue
+                    # Save file
+                    content = f.content
+                    self.save_file(path,content)
 
 
 
