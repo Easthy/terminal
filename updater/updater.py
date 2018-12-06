@@ -16,6 +16,7 @@ class UpdaterError(Exception):
         up.slack_notificate()
 
 class Updater:
+    """DB updater class"""
     DS = '/'
     dir_path = os.path.dirname(os.path.realpath(__file__))
     settings_file = 'settings.json'
@@ -47,9 +48,11 @@ class Updater:
         f.close()
 
     def on_exit(self):
+        """Action called after script ends"""
         self.slack_notificate()
 
     def slack_notificate(self):
+        """Send update notification"""
         header = 'Infomat ID '+self.settings['infomat_id']
         message = 'Success'
         color = 'good'
@@ -174,6 +177,7 @@ class Updater:
         return json.loads(response.content.decode('utf-8'))
 
     def get_query_headers(self):
+        """Forming http query headers"""
         headers = {
             'Accept': 'application/json', 
             'Accept-Encoding': 'gzip, deflate',
@@ -252,12 +256,14 @@ class Updater:
             return json.loads(data)
 
     def save_file(self,path,file):
+        """Save file"""
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path,'wb') as f:
             f.write(file)
             f.close()
 
     def download_files(self,table):
+        """Download images by path in columns, specified in settings"""
         full_path = self.settings['storage_base_path'] + self.DS + table + '.json'
         if not 'files' in self.settings["tables"][table]:
             logging.info("No file path for table "+table+" specified. Skipping")
