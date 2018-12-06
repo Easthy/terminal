@@ -25,6 +25,12 @@
 	"sh_table": "sh_list",
 	"sh_folder": "shell_script",
 	"tables": {
+	    "weather": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
 	    "activity": {
 	        "query_params": {
 	            "fields": "*"
