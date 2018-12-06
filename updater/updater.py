@@ -218,7 +218,7 @@ class Updater:
             os.mkdir(self.settings['storage_base_path'])
         try:
             f = open(full_path, "wb")
-            f.write( json.dumps(data['resource']).encode("unicode_escape") )
+            f.write(json.dumps(data['resource']).encode("unicode_escape"))
             f.close()
         except(Exception) as e:
             error = str(e)
@@ -257,10 +257,11 @@ class Updater:
 
     def save_file(self,path,file):
         """Save file"""
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path,'wb') as f:
-            f.write(file)
-            f.close()
+        if(len(file)>0):
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path,'wb') as f:
+                f.write(file)
+                f.close()
 
     def download_files(self,table):
         """Download images by path in columns, specified in settings"""
