@@ -84,7 +84,6 @@ class AppModel extends Model {
 	public function extract(&$data){
 		return HASH::extract($data,'{n}.{n}');
 	}
-
     
     // Преобразование PHP-массива в POSTEGRES-массив
     public static function toPgArray($set) {

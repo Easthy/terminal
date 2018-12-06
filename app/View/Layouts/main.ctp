@@ -67,8 +67,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 					
 				</span>
 				<span class="text-right" onClick="window.location.href='/home/webcam'" style="cursor:pointer;">
-					23 C
-					<?php //echo $this->getTemperature(); ?>
+					<?php echo !empty($current_temperature[0]['temperature']) ? $current_temperature[0]['temperature']: '--' ?> °C
 				</span>
 			</div>
 		</div>

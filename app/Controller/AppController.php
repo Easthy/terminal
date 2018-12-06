@@ -44,11 +44,8 @@ class AppController extends Controller {
 			}
 			$this->Session->write('Agency',$agency[0]);
 		}
-		// $current_date = AppModel::get_current_date_time();
-		// $this->set('current_date',$current_date);
+		$this->loadModel('Weather');
+		$current_temperature = $this->Weather->get_data('get_current_temperature',array(),'extract');
+		$this->set('current_temperature',$current_temperature);
     }
-
-	public function getTemperature() {
-		return '23 C';
-	}
 }

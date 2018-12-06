@@ -1,0 +1,1 @@
+SELECT temperature FROM public.weather;
