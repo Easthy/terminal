@@ -6,7 +6,7 @@ from datetime import datetime
 import json
 
 from PyQt5 import *
-from PyQt5 import Qt, QtCore, QtGui, QtWidgets
+from PyQt5 import Qt, QtCore, QtGui, QtWidgets, QtPrintSupport
 from PyQt5.QtCore import QEvent, pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QApplication, QPushButton, QVBoxLayout
 from PyQt5.QtGui import QIcon, QKeyEvent, QKeySequence, QFont
@@ -47,7 +47,7 @@ class Terminal(QMainWindow):
         self.main_layout = QVBoxLayout()
         self.main_layout.addWidget(self.webView)
         self.main_layout.addWidget(self.DigitKeyboard)
-        self.main_layout.setContentsMargins(0,0,0,0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
         self.wgt.setLayout(self.main_layout)
         self.wgt.setContextMenuPolicy(QtCore.Qt.PreventContextMenu)
 
@@ -84,22 +84,23 @@ class Terminal(QMainWindow):
         self.press_release_distance = 500
         self.screen_saver_delay = 3000
         self.load_settings()
-
+        # Screensaver timers
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.setScreensaver)
         self.resetTimer()
-
+        # Last visited host
         self.last_host = False
 
     def grantFeatures(self):
         """Grant permissions to capture webcam video"""
         self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaAudioVideoCapture, True)
-        self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaAudioCapture, True)
-        self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaVideoCapture, True)
+        # If video can not be captured due to user requests blocking
+        # self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaAudioCapture, True)
+        # self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaVideoCapture, True)
 
     def setScreensaver(self):
         """Redirect to home page with get parameter enabling screensaver"""
-        script = "window.location.href = '"+self.pages['home']+"/?activate_screensaver=1'"
+        script = ''.join(["window.location.href = '", self.pages['home'], "/?activate_screensaver=1'"])
         self.webView.page().runJavaScript( script )
         self.stopTimer()
 
@@ -115,7 +116,7 @@ class Terminal(QMainWindow):
     def load_settings(self):
         """Load settings file"""
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        settings_path = dir_path+'/settings.json'
+        settings_path = '/'.join([dir_path, "settings.json"])
         if ( not os.path.isfile(settings_path) ):
             print('Settings file not found')
             return False
@@ -139,7 +140,7 @@ class Terminal(QMainWindow):
 
         # Filter series of fast false click
         if event.type() == QtCore.QEvent.MouseButtonPress:
-            if ( self.release_timestamp > 0 and event_timestamp - self.release_timestamp < self.press_min_pause ):
+            if (self.release_timestamp > 0 and event_timestamp - self.release_timestamp < self.press_min_pause):
                 return True
             self.press_timestamp = event_timestamp
             self.cursor_x = cursor_x
@@ -147,9 +148,9 @@ class Terminal(QMainWindow):
 
         # Filter short and long press. Reset screensaver timer 
         if event.type() == QtCore.QEvent.MouseButtonRelease:
-            if ( event_timestamp - self.press_timestamp < self.press_min_duration or event_timestamp - self.press_timestamp > self.press_max_duration ):
+            if (event_timestamp - self.press_timestamp < self.press_min_duration or event_timestamp - self.press_timestamp > self.press_max_duration):
                 return True
-            if ( (cursor_x - self.cursor_x) > self.press_release_distance or (cursor_y - self.cursor_y) > self.press_release_distance ):
+            if ((cursor_x - self.cursor_x) > self.press_release_distance or (cursor_y - self.cursor_y) > self.press_release_distance):
                 return True
             self.release_timestamp = event_timestamp
             self.resetTimer()
@@ -167,12 +168,12 @@ class Terminal(QMainWindow):
 
     def event_log(self,d):
         """Log events"""
-        self.save_file('events.log',"\n"+json.dumps(d))
+        self.save_file("events.log", "\n"+json.dumps(d))
 
     def save_file(self,path,file):
         """Save file"""
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        path = dir_path+'/'+path
+        path = '/'.join([dir_path, path])
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path,'a') as f:
             f.write(file)
@@ -184,7 +185,7 @@ class Terminal(QMainWindow):
 
     def disableSelection(self):
         """Inject css on every page, including external resources such an emias.info"""
-        style = '-webkit-touch-callout: none; -webkit-user-select: none; user-select: none;'
+        style = "-webkit-touch-callout: none; -webkit-user-select: none; user-select: none;"
         script = "document.querySelector('html').setAttribute('style','%s')" %(style)
         self.webView.page().runJavaScript( script )
 
@@ -193,31 +194,43 @@ class Terminal(QMainWindow):
         Qurl = self.webView.url()
         host = Qurl.host()
         path = Qurl.path()
-        location = host + path
+        location = ''.join([host, path])
+        # Remove cookies if host is changed
         if self.last_host != host:
             self.page.profile().cookieStore().deleteAllCookies()
-        print('Page loaded: ' + str(host) + str(path) )
+        print(' '.join(["Page loaded:", str(host), str(path)]))
         self.last_host = host
         if host in self.host_method:
-            print('Calling host specific methods: '+str(host))
+            print(''.join(["Calling host specific methods:", str(host)]))
             getattr(self,self.host_method[host])() 
 
     def showKeyboard(self):
         """Show QT keyboard"""
-        print('showKeyboard function')
+        print("showKeyboard function")
         self.DigitKeyboard.show()
 
     def hideKeyboard(self):
         """Hide QT keyboard"""
-        print('hideKeyboard function')
+        print("hideKeyboard function")
         self.DigitKeyboard.hide()
+
+    def printDoc(self):
+        """Print using default printer"""
+        doc = QtGui.QTextDocument("Hello World!\nThe second row\n----------")
+        printer = QtPrintSupport.QPrinter()
+        printer.setOrientation(QtPrintSupport.QPrinter.Portrait)
+        printer.setPaperSize(QtCore.QSizeF(72, 144), printer.Millimeter)
+        printer.setPageMargins(2, 2, 2, 2, QtPrintSupport.QPrinter.Millimeter)
+        printer.setFullPage(True)
+        doc.print_(printer)
 
     @pyqtSlot(str)
     def clickHandler(self,ch):
+        # Getting current focus
         recipient = self.webView.focusProxy()
         modifiers = QtCore.Qt.NoModifier
         qt_key = getattr(QtCore.Qt, ch)
-        self.event = QKeyEvent(QEvent.KeyPress, qt_key, modifiers, QKeySequence(qt_key).toString() )
+        self.event = QKeyEvent(QEvent.KeyPress, qt_key, modifiers, QKeySequence(qt_key).toString())
         QApplication.postEvent(recipient, self.event)
         self.resetTimer()
 
@@ -346,7 +359,6 @@ class DigitKeyboard(QWidget):
 
     keyClick = pyqtSignal(str)
     homeClick = pyqtSignal()
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
