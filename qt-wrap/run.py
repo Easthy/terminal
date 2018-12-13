@@ -20,6 +20,8 @@ class Terminal(QMainWindow):
     pages = {
         "home": "https://test-terminal"
     }
+    host_allowed = ['emias.info', pages['home']]
+
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -58,14 +60,16 @@ class Terminal(QMainWindow):
         self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
 
         self.show()
-        self.webView.loadStarted.connect(self.hideKeyboard)
+        self.hideKeyboard()
+        # self.webView.loadStarted.connect(self.hideKeyboard)
+        self.webView.urlChanged.connect(self.afterPageLoad)
         self.webView.loadFinished.connect(self.disableSelection)
-        self.webView.loadFinished.connect(self.afterPageLoad)
+        # self.webView.loadFinished.connect(self.afterPageLoad)
         # Grant webcam using
         self.webView.page().featurePermissionRequested.connect(self.grantFeatures)
         # QT keyboard settings
         self.DigitKeyboard.keyClick.connect(self.clickHandler)
-        self.DigitKeyboard.homeClick.connect(partial(self.openPage,self.pages['home']))
+        self.DigitKeyboard.homeClick.connect(partial(self.openPage, self.pages['home']))
         self.webView.focusProxy().installEventFilter(self)
         # Default event filter settings
         self.press_timestamp = 0
@@ -99,9 +103,11 @@ class Terminal(QMainWindow):
         # self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaVideoCapture, True)
 
     def setScreensaver(self):
-        """Redirect to home page with get parameter enabling screensaver"""
+        """Enable screensaver by redirecting to home page with get parameter"""
+        # Hide emias keyboard
+        self.hideKeyboard()
         script = ''.join(["window.location.href = '", self.pages['home'], "/?activate_screensaver=1'"])
-        self.webView.page().runJavaScript( script )
+        self.webView.page().runJavaScript(script)
         self.stopTimer()
 
     def resetTimer(self):
@@ -186,23 +192,32 @@ class Terminal(QMainWindow):
     def disableSelection(self):
         """Inject css on every page, including external resources such an emias.info"""
         style = "-webkit-touch-callout: none; -webkit-user-select: none; user-select: none;"
-        script = "document.querySelector('html').setAttribute('style','%s')" %(style)
+        script = "document.querySelector('html').setAttribute('style', '%s')" %(style)
         self.webView.page().runJavaScript( script )
 
     def afterPageLoad(self):
         """Callback after page is loaded"""
+        # Hide  keyboard
+        self.hideKeyboard()
+        # Spot page params
         Qurl = self.webView.url()
         host = Qurl.host()
         path = Qurl.path()
         location = ''.join([host, path])
+        # Check if host is allowed to be displayed
+        if host not in self.host_allowed:
+            self.openPage(self.pages['home'])
+            return
         # Remove cookies if host is changed
         if self.last_host != host:
             self.page.profile().cookieStore().deleteAllCookies()
         print(' '.join(["Page loaded:", str(host), str(path)]))
+        # Catch current host
         self.last_host = host
+        # Callback part
         if host in self.host_method:
             print(''.join(["Calling host specific methods:", str(host)]))
-            getattr(self,self.host_method[host])() 
+            getattr(self, self.host_method[host])() 
 
     def showKeyboard(self):
         """Show QT keyboard"""
@@ -350,11 +365,12 @@ class DigitKeyboard(QWidget):
 
     @pyqtSlot(str)
     def key_pressed(self, ch):
-        """"""
+        """Custom keyboard click"""
         self.keyClick.emit(ch)
 
     @pyqtSlot()
     def home_pressed(self):
+        """Custom keyboard click home"""
         self.homeClick.emit()
 
     keyClick = pyqtSignal(str)
