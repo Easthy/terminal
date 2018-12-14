@@ -18,7 +18,7 @@ class Terminal(QMainWindow):
         "emias.info": 'showKeyboard'
     }
     pages = {
-        "home": "https://test-terminal"
+        "home": "https://test-terminal/home/index"
     }
     host_allowed = ['emias.info', pages['home']]
 
@@ -87,6 +87,7 @@ class Terminal(QMainWindow):
         self.cursor_y = 0
         self.press_release_distance = 500
         self.screen_saver_delay = 3000
+        # Load and overwrite default settings
         self.load_settings()
         # Screensaver timers
         self.timer = QtCore.QTimer()
@@ -98,13 +99,13 @@ class Terminal(QMainWindow):
     def grantFeatures(self):
         """Grant permissions to capture webcam video"""
         self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaAudioVideoCapture, True)
-        # If video can not be captured due to user requests blocking
+        # If video still can not be captured due to user requests blocking
         # self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaAudioCapture, True)
         # self.page.setFeaturePermission(self.page.url(), WebEnginePage.MediaVideoCapture, True)
 
     def setScreensaver(self):
         """Enable screensaver by redirecting to home page with get parameter"""
-        # Hide emias keyboard
+        # Hide emias keyboard first
         self.hideKeyboard()
         script = ''.join(["window.location.href = '", self.pages['home'], "/?activate_screensaver=1'"])
         self.webView.page().runJavaScript(script)
@@ -204,6 +205,7 @@ class Terminal(QMainWindow):
         host = Qurl.host()
         path = Qurl.path()
         location = ''.join([host, path])
+        print(location)
         # Check if host is allowed to be displayed
         if host not in self.host_allowed:
             self.openPage(self.pages['home'])
