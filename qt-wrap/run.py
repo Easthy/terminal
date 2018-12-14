@@ -86,13 +86,17 @@ class Terminal(QMainWindow):
         self.cursor_x = 0
         self.cursor_y = 0
         self.press_release_distance = 500
-        self.screen_saver_delay = 3000
+        self.scr_set_delay = 60000 # ms
+        self.scr_up_delay = 10000 # ms
         # Load and overwrite default settings
         self.load_settings()
-        # Screensaver timers
-        self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.setScreensaver)
-        self.resetTimer()
+        # Screensaver set timer
+        self.timer_scr_set = QtCore.QTimer()
+        self.timer_scr_set.timeout.connect(self.setScreensaver)
+        self.resetTimer(self.timer_scr_set, self.scr_set_delay)
+        # Screensaver update timer
+        self.timer_scr_up = QtCore.QTimer()
+        self.timer_scr_up.timeout.connect(self.setScreensaver)
         # Last visited host
         self.last_host = False
 
@@ -109,16 +113,20 @@ class Terminal(QMainWindow):
         self.hideKeyboard()
         script = ''.join(["window.location.href = '", self.pages['home'], "/?activate_screensaver=1'"])
         self.webView.page().runJavaScript(script)
-        self.stopTimer()
+        self.stopTimer(self.timer_scr_set)
+        self.resetTimer(self.timer_scr_up, self.scr_up_delay)
 
-    def resetTimer(self):
+    def resetTimer(self, timer, delay):
         """Reset screensaver timer if user action detected"""
-        self.timer.setInterval(self.screen_saver_delay)
-        self.timer.start()
+        timer.setInterval(delay)
+        timer.start()
+        # self.timer_scr_set.setInterval(self.scr_set_delay)
+        # self.timer_scr_set.start()
 
-    def stopTimer(self):
+    def stopTimer(self, timer):
         """Stop screensaver timer"""
-        self.timer.stop()
+        timer.stop()
+        # self.timer_scr_set.stop()
 
     def load_settings(self):
         """Load settings file"""
@@ -160,7 +168,10 @@ class Terminal(QMainWindow):
             if ((cursor_x - self.cursor_x) > self.press_release_distance or (cursor_y - self.cursor_y) > self.press_release_distance):
                 return True
             self.release_timestamp = event_timestamp
-            self.resetTimer()
+            # Reset screensaver set timer when user touchs the screen
+            self.resetTimer(self.timer_scr_set, self.scr_set_delay)
+            # Stop screensaver updater timer when user touchs the screen
+            self.stopTimer(self.timer_scr_up)
 
         # Filter move when it starts immediately
         if event.type() == QtCore.QEvent.MouseMove:
@@ -207,6 +218,7 @@ class Terminal(QMainWindow):
         location = ''.join([host, path])
         # Check if host is allowed to be displayed
         if host not in self.host_allowed:
+            print(' '.join(['Page', host, 'is not allowed to be displayed. Coming home...']))
             self.openPage(self.pages['home'])
             return
         # Remove cookies if host is changed
@@ -248,7 +260,8 @@ class Terminal(QMainWindow):
         qt_key = getattr(QtCore.Qt, ch)
         self.event = QKeyEvent(QEvent.KeyPress, qt_key, modifiers, QKeySequence(qt_key).toString())
         QApplication.postEvent(recipient, self.event)
-        self.resetTimer()
+        # Reset timer when operate with keyboard
+        self.resetTimer(self.timer_scr_set, self.scr_set_delay)
 
 class WebEngineView(QtWebEngineWidgets.QWebEngineView):
     """Custom QWebEngineView subclass."""
