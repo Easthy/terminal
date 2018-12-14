@@ -20,7 +20,7 @@ class Terminal(QMainWindow):
     pages = {
         "home": "https://test-terminal"
     }
-    host_allowed = ['emias.info', pages['home']]
+    host_allowed = ['emias.info', 'test-terminal']
 
     def __init__(self):
         super().__init__()
@@ -62,7 +62,7 @@ class Terminal(QMainWindow):
         self.show()
         self.hideKeyboard()
         # self.webView.loadStarted.connect(self.hideKeyboard)
-        self.webView.loadFinished.connect(self.afterPageLoad)
+        self.webView.urlChanged.connect(self.afterPageLoad)
         self.webView.loadFinished.connect(self.disableSelection)
         # self.webView.loadFinished.connect(self.afterPageLoad)
         # Grant webcam using
