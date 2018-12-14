@@ -18,7 +18,7 @@ class Terminal(QMainWindow):
         "emias.info": 'showKeyboard'
     }
     pages = {
-        "home": "https://test-terminal/home/index"
+        "home": "https://test-terminal"
     }
     host_allowed = ['emias.info', pages['home']]
 
@@ -62,7 +62,7 @@ class Terminal(QMainWindow):
         self.show()
         self.hideKeyboard()
         # self.webView.loadStarted.connect(self.hideKeyboard)
-        self.webView.urlChanged.connect(self.afterPageLoad)
+        self.webView.loadFinished.connect(self.afterPageLoad)
         self.webView.loadFinished.connect(self.disableSelection)
         # self.webView.loadFinished.connect(self.afterPageLoad)
         # Grant webcam using
@@ -205,7 +205,6 @@ class Terminal(QMainWindow):
         host = Qurl.host()
         path = Qurl.path()
         location = ''.join([host, path])
-        print(location)
         # Check if host is allowed to be displayed
         if host not in self.host_allowed:
             self.openPage(self.pages['home'])
