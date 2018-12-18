@@ -8,7 +8,7 @@ import json
 from PyQt5 import *
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets, QtPrintSupport
 from PyQt5.QtCore import QEvent, pyqtSlot, pyqtSignal
-from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QApplication, QPushButton, QVBoxLayout
+from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QApplication, QPushButton, QVBoxLayout, QDesktopWidget
 from PyQt5.QtGui import QIcon, QKeyEvent, QKeySequence, QFont
 from PyQt5 import QtWebEngineWidgets, QtNetwork
 
@@ -99,6 +99,11 @@ class Terminal(QMainWindow):
         self.timer_scr_up.timeout.connect(self.setScreensaver)
         # Last visited host
         self.last_host = False
+        # Center application window
+        qtRectangle = self.frameGeometry()
+        centerPoint = QDesktopWidget().availableGeometry().center()
+        qtRectangle.moveCenter(centerPoint)
+        self.move(qtRectangle.topLeft())
 
     def grantFeatures(self):
         """Grant permissions to capture webcam video"""
