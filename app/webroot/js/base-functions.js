@@ -72,7 +72,7 @@ $(function() {
 			'display' 			: 'block',
 			'position'			: 'absolute',
 			'z-index'			: 100,
-			'width'				: '1056px',
+			'width'				: '1080px',
 			'height'			: '1920px',
 			'top'				: 0,
 			'left'				: 0
