@@ -17,7 +17,18 @@
 								<span class="text-blue-small-thick">
 									<?= !empty($activity['shortname'])?$activity['shortname'].'<br>':'' ?>
 								</span>
-								<span class="text-black-small"><?= $activity['name']; ?></span>
+								<span class="text-black-small">
+									<?= $activity['name']; ?>
+								<br>
+								<?php 
+									if($activity['periodicity_id']!=ONE_TIME_ACTIVITY_ID) {
+										echo '<span class="text-blue-small-thick">Расписание:</span><br>';
+										echo '<span class="text-blue-small-thin">';
+										echo join(',',$activity['schedule']);
+										echo '</span>';
+									}	
+								?>
+								</span>
 							</div>
 						</div>
 					</a>

@@ -1,6 +1,6 @@
 <div class="white-content menu-added">
 	<div class="white-content-header text-black-small" style="text-align:center;">Календарь событий учреждения</div>
-	<div id="calendar-wrap" style="width:934px; height: 520px;"></div>
+	<div id="calendar-wrap" style="width:934px;"></div>
 
 	<div class="tab-container" style="max-height: 880px;">
 		<div class="tab" id="activities">

@@ -45,74 +45,6 @@ class ActivityController extends AppController {
  * @throws NotFoundException When the view file could not be found
  *   or MissingViewException in debug mode.
  */
-	// public function index() {
-	// 	$this->layout = 'main';
-		
-	// 	$menu = [
-	// 		['name' => 'Главная', 'href' => '/'], 
-	// 		['name' => 'Календарь событий', 'href' => '/calendar'],
-	// 		['name' => 'Детали события', 'href' => '#']
-	// 	];
-	// 	$this->set('menu', $menu);
-
-	// 	$model = [
-	// 		'name' => 'Наименование события длинное можно и в две строки',
-	// 		'date' => '20 Июня, 18:00',
-	// 		'type' => 'sport',
-	// 		'photos' => [
-	// 			'/img/tmp/activity_1.png', '', '', '', ''
-	// 		],
-	// 		'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
- // 					<br><br>
- // 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br>
-	// 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br><br>
- // 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br>
-	// 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br><br>
- // 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br>
-	// 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.',
-	// 	];
-
-	// 	$this->set('model', $model);
-	// }
-
-	// public function nophoto()
-	// {
-	// 	$this->layout = 'main';
-		
-	// 	$menu = [
-	// 		['name' => 'Главная', 'href' => '/'], 
-	// 		['name' => 'Календарь событий', 'href' => '/calendar'],
-	// 		['name' => 'Детали события', 'href' => '#']
-	// 	];
-	// 	$this->set('menu', $menu);
-
-	// 	$model = [
-	// 		'name' => 'Наименование события длинное можно и в две строки',
-	// 		'date' => '20 Июня, 18:00',
-	// 		'type' => 'sport',
-	// 		'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
- // 					<br><br>
- // 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br>
-	// 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br><br>
- // 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br>
-	// 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br><br>
- // 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br>
-	// 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.',
-	// 	];
-
-	// 	$this->set('model', $model);
-	// 	$this->render('index');
-	// }
 
 	public function bycompany()
 	{
@@ -125,7 +57,13 @@ class ActivityController extends AppController {
 		$this->set('menu', $menu);
 
 		$this->loadModel('Activity');
-		$activities = $this->Activity->get_data('get_activity_by_agency',array('agency_id'=>Configure::read('Terminal')['agency_id']),'format_activity_schedule');
+		$activities = $this->Activity->get_data(
+			'get_activity_by_agency',
+			array(
+				'agency_id' => Configure::read('Terminal')['agency_id']
+			),
+			'format_activity_schedule'
+		);
 		$this->set('activity_action','info');
 		$this->set('activities',$activities);
 	}
@@ -162,67 +100,6 @@ class ActivityController extends AppController {
 		$this->render('index');
 	}
 
-	// public function period()
-	// {
-	// 	$this->layout = 'main';
-		
-	// 	$active_days = [
-	// 		9 => [11,13,18,20]
-	// 	];
-	// 	$this->set('active_days', json_encode($active_days, JSON_PRETTY_PRINT));
-	// 	$this->set('active_week_days', json_encode([2,4], JSON_PRETTY_PRINT));
-
-	// 	$model = [
-	// 		'name' => 'Обучение плаванию в  бассейне',
-	// 		'date' => 'ВТ 18:00, ЧТ 20:00, 70 баллов<br>ул. Советская, д. 120, бассейн "Олимпик"',
-	// 		'type' => 'sport',
-	// 		'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
- // 					<br><br>
- // 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br>
-	// 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br><br>
- // 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br>
-	// 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br><br>
- // 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br>
-	// 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.',
-	// 	];
-
-	// 	$this->set('model', $model);
-	// }
-
-	// public function confirm()
-	// {
-	// 	$this->layout = 'main';
-	// 	// $menu = [['Главная'], ['Сведения об учреждении']];
-	// 	// $this->set('menu', $menu);
-
-	// 	$model = [
-	// 		'name' => 'Обучение плаванию в  бассейне',
-	// 		'schedule' => 'ВТ 18:00, ЧТ 20:00', 
-	// 		'points' => 70,
-	// 		'address' => 'ул. Советская, д. 120, бассейн "Олимпик"',
-	// 		'type' => 'sport',
-	// 		'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
- // 					<br><br>
- // 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br>
-	// 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br><br>
- // 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br>
-	// 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br><br>
- // 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-	// 				<br>
-	// 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.',
-	// 	];
-
-	// 	$this->set('model', $model);
-	// }
 
 	public function long_life()
 	{
@@ -275,7 +152,11 @@ class ActivityController extends AppController {
 			'agency_id' => $settings['agency_id'],
 			'start_date' => $this->request->data['start_date']
 		);
-		$activities = $this->Activity->get_data('get_agency_coming_activity_by_date',$params,'format_activity_schedule');
+		$activities = $this->Activity->get_data(
+			'get_agency_coming_activity_by_date',
+			$params,
+			'format_activity_schedule'
+		);
 		$view->set('activities', $activities);
 		$view->set('activity_action','info');
 		$view->set('referer','calendar');
@@ -289,76 +170,6 @@ class ActivityController extends AppController {
 	{
 		$this->layout = 'main';
 	}
-
-	// public function companyevent()
-	// {
-	// 	$this->layout = 'main';
-	// 	// $menu = [['Главная'], ['Сведения об учреждении']];
-	// 	// $this->set('menu', $menu);
-
-	// 	$model = [
-	// 		'date' => '20 июня 2018',
-	// 		'company_name' => 'Досуговый центр №1',
-	// 		'activities' => [
-	// 			[
-	// 				'name' => 'Название события длинное если нужно то и в две строки',
-	// 				'date' => '05',
-	// 				'month' => 'ИЮЛЯ',
-	// 				'type' => 'sport',
-	// 				'start' => '14:00',
-	// 				'company' => 'Досуговый центр №1',
-	// 				'schedule' => ''
-	// 			],
-	// 			[
-	// 				'name' => 'Название события длинное если нужно то и в две строки',
-	// 				'date' => '08',
-	// 				'month' => 'ИЮЛЯ',
-	// 				'type' => 'art',
-	// 				'start' => '14:00',
-	// 				'company' => 'Досуговый центр №1',
-	// 				'schedule' => ''
-	// 			],
-	// 			[
-	// 				'name' => 'Название события длинное если нужно то и в две строки',
-	// 				'date' => '12',
-	// 				'month' => 'ИЮЛЯ',
-	// 				'type' => 'study',
-	// 				'start' => '10:00',
-	// 				'company' => 'Досуговый центр №1',
-	// 				'schedule' => [['day'=>'ПН', 'time' => '10:00'], ['day'=>'ВТ', 'time' => '12:00'], ['day'=>'СР', 'time' => '14:00']]
-	// 			],
-	// 			[
-	// 				'name' => 'Название события длинное если нужно то и в две строки',
-	// 				'date' => '05',
-	// 				'month' => 'ИЮЛЯ',
-	// 				'type' => 'sport',
-	// 				'start' => '14:00',
-	// 				'company' => 'Досуговый центр №1',
-	// 				'schedule' => ''
-	// 			],
-	// 			[
-	// 				'name' => 'Название события длинное если нужно то и в две строки',
-	// 				'date' => '08',
-	// 				'month' => 'ИЮЛЯ',
-	// 				'type' => 'draw',
-	// 				'start' => '14:00',
-	// 				'company' => 'Досуговый центр №1',
-	// 				'schedule' => ''
-	// 			],
-	// 			[
-	// 				'name' => 'Название события длинное если нужно то и в две строки',
-	// 				'date' => '12',
-	// 				'month' => 'ИЮЛЯ',
-	// 				'type' => 'study',
-	// 				'start' => '10:00',
-	// 				'company' => 'Досуговый центр №1',
-	// 				'schedule' => [['day'=>'ПН', 'time' => '10:00'], ['day'=>'ВТ', 'time' => '12:00'], ['day'=>'СР', 'time' => '14:00']]
-	// 			],			
-	// 		]
-	// 	];
-
-	// 	$this->set('model', $model);
-	// }
 
 	public function long_life_eventinfo()
 	{

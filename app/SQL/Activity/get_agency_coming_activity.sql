@@ -1,5 +1,6 @@
 -- One-time activities
 SELECT
+	a.id,
 	to_char(a.start_date, 'DD') as date,
 	to_char(a.start_date, 'MM') as month,
 	a.start_date,
@@ -24,6 +25,7 @@ UNION ALL
 
 /* Periodical activities */
 SELECT
+	a.id,
 	to_char(c.date, 'DD') as date,
 	to_char(c.date, 'MM') as month,
 	c.date,
@@ -71,10 +73,7 @@ AND a.agency_id = :agency_id
 AND c.date BETWEEN CURRENT_DATE AND public._calc_interval((now() at time zone 'utc'), :interval::varchar)
 
 ORDER BY
-	3
+	4
 LIMIT 
 	:limit
 ;
-
-
-

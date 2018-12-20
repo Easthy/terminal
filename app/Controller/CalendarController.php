@@ -55,7 +55,13 @@ class CalendarController extends AppController {
 		$this->set('menu', $menu);
 
 		$this->loadModel('Activity');
-		$activities = $this->Activity->get_data('get_activity_by_agency',array('agency_id'=>Configure::read('Terminal')['agency_id']),'format_activity_schedule');
+		$activities = $this->Activity->get_data(
+			'get_activity_by_agency',
+			array(
+				'agency_id' => Configure::read('Terminal')['agency_id']
+			),
+			'format_activity_schedule'
+		);
 		$start_dates = HASH::extract($activities,'{n}.start_date');
 		$active_days = array();
 		if( !empty($start_dates) ){
