@@ -7,6 +7,7 @@ import logging
 import signal
 import hashlib
 import atexit
+import io
 
 class UpdaterError(Exception):
     def __init__(self, message):
@@ -118,7 +119,7 @@ class Updater:
         )
         if shell_scripts['resource']:
             for sh in shell_scripts['resource']:
-                sh_file_path = self.DS.join([self.dir_path,self.settings['sh_folder'],sh['sh_name']]) + '#' + str(sh['id']) + '.sh'
+                sh_file_path = self.DS.join([self.dir_path, self.settings['sh_folder'], sh['sh_name']]) + '#' + str(sh['id']) + '.sh'
                 f = open(sh_file_path, "w")
                 f.write( sh['sh_code'] )
                 f.close()
@@ -151,7 +152,13 @@ class Updater:
                     'PATCH'
                 )
 
-    def query_service(self,table,service,params,data=None,json_params=None,method='GET'):
+    def query_service(self,
+                    table,
+                    service,
+                    params,
+                    data=None,
+                    json_params=None,
+                    method='GET'):
         """
         Forming url, headers and data to send, then sends request to dreamfactory service
         """
@@ -191,7 +198,7 @@ class Updater:
             headers['X-DreamFactory-Session-Token'] = self.session_token
         return headers
 
-    def get_query_url(self,table,service,params):
+    def get_query_url(self, table, service, params):
         """
         Forming query url
         """
@@ -199,7 +206,7 @@ class Updater:
         query = self.get_query_params(params)
         return '?'.join([url,query])
 
-    def get_query_params(self,params):
+    def get_query_params(self, params):
         """
         Forming GET-method parameters
         """
@@ -209,7 +216,7 @@ class Updater:
                 query.append( param+'='+value )
         return '&'.join(query)
 
-    def save_json(self,data,table):
+    def save_json(self, data, table):
         """
         Saves json files to update database
         """
@@ -217,15 +224,14 @@ class Updater:
         if not os.path.exists(self.settings['storage_base_path']):
             os.mkdir(self.settings['storage_base_path'])
         try:
-            f = open(full_path, "wb")
-            f.write(json.dumps(data['resource']).encode("unicode_escape"))
-            f.close()
+            with io.open(full_path, 'w', encoding='unicode_escape') as f:
+                json.dump(data['resource'], f)
         except(Exception) as e:
             error = str(e)
             self.errors.append(error)
             raise Exception(error)
 
-    def update_table(self,table):
+    def update_table(self, table):
         """
         Updates database with the query self.updater_sql from json files
         """
@@ -251,11 +257,12 @@ class Updater:
         return self.settings['tables']
 
     def open_file(self,path):
-        with open(path,"r", encoding="unicode_escape") as f:
+        #, encoding='unicode_escape'
+        with io.open(path, 'r', encoding='unicode_escape') as f:
             data = f.read()
-            return json.loads(data)
+        return json.loads(data)
 
-    def save_file(self,path,file):
+    def save_file(self, path, file):
         """Save file"""
         if(len(file)>0):
             os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -263,7 +270,7 @@ class Updater:
                 f.write(file)
                 f.close()
 
-    def download_files(self,table):
+    def download_files(self, table):
         """Download images by path in columns, specified in settings"""
         full_path = self.settings['storage_base_path'] + self.DS + table + '.json'
         if not 'files' in self.settings["tables"][table]:
@@ -300,8 +307,8 @@ tables = up.get_table_list()
 
 # Fill file_cache
 for table,params in tables.items():
-    response = up.query_service(table,params['service'],params["query_params"])
-    up.save_json(response,table)
+    response = up.query_service(table, params['service'], params["query_params"])
+    up.save_json(response, table)
 
 # Download files
 for table,params in tables.items():
