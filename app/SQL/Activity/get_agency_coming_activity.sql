@@ -47,7 +47,7 @@ ON c.date BETWEEN a.start_date AND COALESCE(a.end_date, CURRENT_DATE)
 AND c.day IN (
 	with activity_rows as (
 		SELECT 
-			json_populate_recordset(NULL :: SCHEDULE, REPLACE(a.schedule::text, '\"', '"')::json ) as schedule
+			json_populate_recordset(NULL :: SCHEDULE, REPLACE(trim(a.schedule::text,'"'), '\"', '"')::json) as schedule
 	    FROM
 	    	public.activity
 	    ORDER BY
