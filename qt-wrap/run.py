@@ -87,7 +87,7 @@ class Terminal(QMainWindow):
         self.cursor_y = 0
         self.press_release_distance = 500
         self.scr_set_delay = 60000 # ms
-        self.scr_up_delay = 10000 # ms
+        self.scr_up_delay = 1800000 # ms
         # Load and overwrite default settings
         self.load_settings()
         # Screensaver set timer
