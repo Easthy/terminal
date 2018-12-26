@@ -19,6 +19,7 @@
  */
 
 App::uses('AppController', 'Controller');
+App::uses('AppModel', 'Model');
 
 /**
  * Static content controller
@@ -55,7 +56,7 @@ class AboutController extends AppController {
 		$this->set('menu', $menu);
 
 		$this->loadModel('Agency');
-		$affiliate_id = $this->Agency->get_data('get_agency_affiliate',array('agency_id'=>Configure::read('Terminal')['agency_id']));
+		$affiliate_id = $this->Agency->get_data('get_agency_affiliate',array('agency_id'=>AppModel::get_agency_id()));
 		$affiliate_id = HASH::extract($affiliate_id,'{n}.{n}.id');
 		$affiliates = $this->Agency->get_data('get_agency_information',array('agency_id'=>AppModel::toPgArray($affiliate_id)),'extract');
 		$agency_id = AppModel::get_agency_id();
@@ -72,7 +73,7 @@ class AboutController extends AppController {
 		$this->set('management',$management);
 
 		$this->loadModel('AgencyPhotoAlbum');
-		$albums = $this->AgencyPhotoAlbum->get_data('get_agency_photo_album',array('agency_id'=>AppModel::toPgArray(array(Configure::read('Terminal')['agency_id']))),'extract');
+		$albums = $this->AgencyPhotoAlbum->get_data('get_agency_photo_album',array('agency_id'=>AppModel::toPgArray(array(AppModel::get_agency_id()))),'extract');
 		$albums = AppModel::groupArray($albums,'photo_album_id');
 		$this->set('albums',$albums);
 

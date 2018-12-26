@@ -19,6 +19,7 @@
  */
 
 App::uses('AppController', 'Controller');
+App::uses('AppModel', 'Model');
 
 /**
  * Static content controller
@@ -55,7 +56,7 @@ class ServiceController extends AppController {
 		$this->set('menu', $menu);
 
 		$this->loadModel('Service');
-		$services = $this->Service->get_data('get_service_by_agency',array('agency_id'=>Configure::read('Terminal')['agency_id']),'extract');
+		$services = $this->Service->get_data('get_service_by_agency',array('agency_id'=>AppModel::get_agency_id()),'extract');
 
 		$this->set('services', $services);
 	}

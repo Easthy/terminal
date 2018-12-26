@@ -19,6 +19,7 @@
  */
 
 App::uses('AppController', 'Controller');
+App::uses('AppModel', 'Model');
 
 /**
  * Static content controller
@@ -58,7 +59,7 @@ class CalendarController extends AppController {
 		$activities = $this->Activity->get_data(
 			'get_activity_by_agency',
 			array(
-				'agency_id' => Configure::read('Terminal')['agency_id']
+				'agency_id' => AppModel::get_agency_id()
 			),
 			'format_activity_schedule'
 		);

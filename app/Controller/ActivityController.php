@@ -19,6 +19,7 @@
  */
 
 App::uses('AppController', 'Controller');
+App::uses('AppModel', 'Model');
 
 /**
  * Static content controller
@@ -60,7 +61,7 @@ class ActivityController extends AppController {
 		$activities = $this->Activity->get_data(
 			'get_activity_by_agency',
 			array(
-				'agency_id' => Configure::read('Terminal')['agency_id']
+				'agency_id' => AppModel::get_agency_id()
 			),
 			'format_activity_schedule'
 		);
@@ -145,11 +146,11 @@ class ActivityController extends AppController {
         $this->autoRender = false;
         $view = new View($this, false);
 
-		$settings = Configure::read('Terminal');
-		// debug($settings);
+		$agency_id = AppModel::get_agency_id();
+
 		$this->loadModel('Activity');
 		$params = array(
-			'agency_id' => $settings['agency_id'],
+			'agency_id' => $agency_id,
 			'start_date' => $this->request->data['start_date']
 		);
 		$activities = $this->Activity->get_data(

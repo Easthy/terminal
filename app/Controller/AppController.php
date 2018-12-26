@@ -33,9 +33,14 @@ App::uses('AppModel', 'Model');
  */
 class AppController extends Controller {
     public function beforeFilter() {
-		if(!$this->Session->check('Agency.shortname')){
+		if(!$this->Session->check('Agency.shortname') || !empty($this->request->query['ag_id'])){
 			$this->loadModel('Agency');
-			$agency_id = array(Configure::read('Terminal')['agency_id']);
+			if(!empty($this->request->query['ag_id'])){
+				CakeSession::write('Agency.id', $this->request->query['ag_id']);
+			}else{
+				CakeSession::write('Agency.id', Configure::read('Terminal')['agency_id']);
+			}
+			$agency_id = array(AppModel::get_agency_id());
 			$agency = $this->Agency->get_data('get_agency_information',array('agency_id'=>AppModel::toPgArray($agency_id)),'extract');
 			if(empty($agency)){
 				echo "Agency could not be found!

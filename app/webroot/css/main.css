@@ -777,3 +777,11 @@ table.event-categories .bottom-line {
     z-index: -100;
     background-size: cover;
 }
+
+body, a, img, div {
+	-webkit-user-drag: none;
+	-khtml-user-drag: none;
+	-moz-user-drag: none;
+	-o-user-drag: none;
+	user-drag: none;
+}

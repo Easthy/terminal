@@ -19,6 +19,7 @@
  */
 
 App::uses('AppController', 'Controller');
+App::uses('AppModel', 'Model');
 
 /**
  * Static content controller
@@ -49,11 +50,11 @@ class HomeController extends AppController {
 		$this->layout = 'main';
 		// $menu = [['Главная'], ['Сведения об учреждении']];
 		// $this->set('menu', $menu);
-		$settings = Configure::read('Terminal');
+		$agency_id = AppModel::get_agency_id();
 		// debug($settings);
 		$this->loadModel('Activity');
 		$params = array(
-			'agency_id' => $settings['agency_id']
+			'agency_id' => $agency_id
 		);
 		$activities = $this->Activity->get_data('get_agency_coming_activity',$params,'format_activity_schedule');
 		$this->set('activities', $activities);
@@ -61,10 +62,10 @@ class HomeController extends AppController {
 
 	public function get_screensaver(){
 		$this->render('/Layouts/ajax', 'ajax');
-		$settings = Configure::read('Terminal');
+		$agency_id = AppModel::get_agency_id();
 		$this->loadModel('ScreenSaver');
 		$params = array(
-			'agency_id' => $settings['agency_id']
+			'agency_id' => $agency_id
 		);
 		$agency_screensaver = $this->ScreenSaver->get_data('get_active_screensaver',$params,'extract');
 		$screensaver = DS.$settings['default_screensaver'];
