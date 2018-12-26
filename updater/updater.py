@@ -99,8 +99,8 @@ class Updater:
         self.session_token = auth_content['session_token']
 
     def run_shell_instructions(self):
-        if not os.path.exists( self.DS.join([self.dir_path, self.settings['sh_folder']]) ):
-            os.mkdir( self.DS.join([self.dir_path, self.settings['sh_folder']]) )
+        if not os.path.exists(self.DS.join([self.dir_path, self.settings['sh_folder']])):
+            os.mkdir(self.DS.join([self.dir_path, self.settings['sh_folder']]))
         try:
             self.download_shell_script()
             self.execute_shell_script()
@@ -134,11 +134,12 @@ class Updater:
             if file.endswith(".sh"):
                 # shell script id parsing from the shell script name
                 sh_id = os.path.splitext(file)[0].split('#')[1]
-                sh_file_path = self.DS.join( [self.dir_path, self.settings['sh_folder'], file] )
+                sh_file_path = self.DS.join([self.dir_path, self.settings['sh_folder'], file])
+                sh_folder = self.DS.join([self.dir_path, self.settings['sh_folder']])
                 # run shell script
                 proc = subprocess.Popen(
                     [sh_file_path], 
-                    cwd=self.settings['sh_folder'], shell=True
+                    cwd=sh_folder, shell=True
                 )
                 proc.wait()
                 os.remove(sh_file_path)
@@ -245,7 +246,6 @@ class Updater:
             updater_json_file = full_path,
             table = table
         )
-
         cursor = self.db_connect().cursor()
         cursor.execute(sql)
         cursor.close()
