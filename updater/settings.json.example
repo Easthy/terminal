@@ -2,7 +2,7 @@
 	"credentials": {"email":"update@infomat.moscow","password":"infomat","remember_me":false},
 	"storage_base_path": "/var/www/terminal/updater/file_cache",
 	"updater_sql_path": "/var/www/terminal/updater/sql/updater.sql",
-	"file_root_path": "/var/www/terminal/webroot",
+	"file_root_path": "/var/www/terminal/app/webroot",
 	"file_url": "http://infomat.moscow",
 	"user_agent": "infomat-updater",
 	"base_url": "http://dreamfactory.infomat.moscow",
