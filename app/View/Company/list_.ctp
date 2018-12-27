@@ -34,7 +34,7 @@
 						<span class="text-white-small-thick"><?= !empty($district) ? $district : '' ?></span>
 					</div>
 					<?php foreach($district_agencies as $agency):?>
-						<a href="javascript:void(0)" class="open-page" data-href="/company/info?agency_id=<?= $agency['id'] ?>">
+						<a href="javascript:void(0)" class="open-page" data-href="/company/info?agency_id=<?= $agency['id'] ?><?=!empty($this->request->query['ag_id'])?'&ag_id='.$this->request->query['ag_id']:''?>">
 							<div class="tab-item">
 								<span class="text-black-small"><?= $agency['shortname'] ?></span>
 								<br>

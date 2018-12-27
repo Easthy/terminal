@@ -1,7 +1,7 @@
 		<?php if(!empty($activities)):?>	
 			<?php foreach ($activities as $k => $activity): ?> 
 				<div class="tab-item no-side-padding"  data-id="<?= $k ?>">
-					<a class="open-page" href="javascript:void(0)" data-href="/activity/<?=$activity_action?>?activity_id=<?=$activity['id']?><?=!empty($referer)?'&referer='.$referer:''?>" >
+					<a class="open-page" href="javascript:void(0)" data-href="/activity/<?=$activity_action?>?activity_id=<?=$activity['id']?><?=!empty($referer)?'&referer='.$referer:''?><?=!empty($this->request->query['ag_id'])?'&ag_id='.$this->request->query['ag_id']:''?>" >
 						<div class="activity-container">
 							<div class="activity-date green valign" style="line-height:60px">
 								<span class="text-white-small-thick">

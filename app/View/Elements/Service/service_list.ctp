@@ -2,7 +2,7 @@
 			<?php if(!empty($services)):?>
 				<?php foreach ($services as $k => $service): ?>
 					<?
-						$link='/service/info?service_id='.$service['id'];
+						$link='/service/info?service_id='.$service['id'].(!empty($this->request->query['ag_id'])?'&ag_id='.$this->request->query['ag_id']:'');
 
 						if(!empty($referer)) {
 							foreach($referer as $key=> $r){

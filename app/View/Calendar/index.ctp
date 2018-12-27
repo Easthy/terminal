@@ -342,11 +342,16 @@
     });
 
     getActivityList = function(date){
+        var ag_id = "<?=!empty($this->request->query['ag_id'])?$this->request->query['ag_id']:''?>";
+        var url = '/activity/get_agency_coming_activity_by_date';
+        if (ag_id){
+            url += '?ag_id='+ag_id;
+        }
         return $.ajax({
-            url: '/activity/get_agency_coming_activity_by_date',
+            url: url,
             type: "POST",
             dataType: "json",
-            data: {"start_date":date}, // конец data
+            data: {"start_date":date }, // конец data
         });
     }
 

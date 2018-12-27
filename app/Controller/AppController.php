@@ -53,4 +53,15 @@ class AppController extends Controller {
 		$current_temperature = $this->Weather->get_data('get_current_temperature',array(),'extract');
 		$this->set('current_temperature',$current_temperature);
     }
+
+    public function beforeRender() {
+		if (!empty($this->request->query['ag_id']) && !empty($this->viewVars['menu'])){
+			$this->viewVars['menu'] = array_map(function($a){
+				if(!in_array($a['href'], array('#', 'javascript:void(0)'))){
+					$a['href'] .= '?ag_id='.$this->request->query['ag_id'];	
+				}
+				return $a;
+			}, $this->viewVars['menu']);
+		}
+    }
 }
