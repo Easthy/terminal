@@ -31,7 +31,7 @@ class Terminal(QMainWindow):
         self.statusBar().hide()
         self.setObjectName("MainWindow")
         # Hide window frame
-        # self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
        
         self.webView = WebEngineView()
         self.openPage(self.pages['home'])
@@ -71,6 +71,12 @@ class Terminal(QMainWindow):
         self.DigitKeyboard.keyClick.connect(self.clickHandler)
         self.DigitKeyboard.homeClick.connect(partial(self.openPage, self.pages['home']))
         self.webView.focusProxy().installEventFilter(self)
+        #
+        self.filter_edge = 0
+        self.filter_series = 0
+        self.filter_short = 0
+        self.filter_long = 0
+        self.filter_immed_move = 0
         # Default event filter settings
         self.press_timestamp = 0
         self.release_timestamp = 0
@@ -125,8 +131,6 @@ class Terminal(QMainWindow):
         """Reset screensaver timer if user action detected"""
         timer.setInterval(delay)
         timer.start()
-        # self.timer_scr_set.setInterval(self.scr_set_delay)
-        # self.timer_scr_set.start()
 
     def stopTimer(self, timer):
         """Stop screensaver timer"""
@@ -155,12 +159,18 @@ class Terminal(QMainWindow):
         readable_event_timestamp = datetime.utcfromtimestamp(event_timestamp).strftime('%Y-%m-%d %H:%M:%S.%f')
 
         # This filter should be enabled only with 90 degree rotated screen
-        # if cursor_x < self.cursor_x_min or cursor_x > self.cursor_x_max or cursor_y < self.cursor_y_min or cursor_y > self.cursor_y_max:
-            # return True
+        if self.filter_edge and \
+           (cursor_x < self.cursor_x_min or 
+           cursor_x > self.cursor_x_max or 
+           cursor_y < self.cursor_y_min or 
+           cursor_y > self.cursor_y_max):
+            return True
 
         # Filter series of fast false click
         if event.type() == QtCore.QEvent.MouseButtonPress:
-            if (self.release_timestamp > 0 and event_timestamp - self.release_timestamp < self.press_min_pause):
+            if self.filter_series and \
+              (self.release_timestamp > 0 and 
+               event_timestamp - self.release_timestamp < self.press_min_pause):
                 return True
             self.press_timestamp = event_timestamp
             self.cursor_x = cursor_x
@@ -168,7 +178,9 @@ class Terminal(QMainWindow):
 
         # Filter short and long press. Reset screensaver timer 
         if event.type() == QtCore.QEvent.MouseButtonRelease:
-            if (event_timestamp - self.press_timestamp < self.press_min_duration or event_timestamp - self.press_timestamp > self.press_max_duration):
+            if self.filter_short and (event_timestamp - self.press_timestamp < self.press_min_duration):
+                return True
+            if self.filter_long and (event_timestamp - self.press_timestamp > self.press_max_duration):
                 return True
             if ((cursor_x - self.cursor_x) > self.press_release_distance or (cursor_y - self.cursor_y) > self.press_release_distance):
                 return True
@@ -179,7 +191,7 @@ class Terminal(QMainWindow):
             self.stopTimer(self.timer_scr_up)
 
         # Filter move when it starts immediately
-        if event.type() == QtCore.QEvent.MouseMove:
+        if self.filter_immed_move and event.type() == QtCore.QEvent.MouseMove:
             if(self.press_timestamp < self.release_timestamp):
                 return True
             if(event_timestamp - self.release_timestamp < self.move_after_release_min):

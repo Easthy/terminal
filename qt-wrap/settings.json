@@ -1,4 +1,9 @@
 {
+    "filter_edge": 1,
+    "filter_series": 1,
+    "filter_short": 1,
+    "filter_long": 1,
+    "filter_immed_move": 1,
     "press_min_pause" : 0.2,
     "press_min_duration" : 0.16,
     "press_max_duration" : 0.6,
