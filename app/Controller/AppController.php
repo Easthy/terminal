@@ -58,7 +58,7 @@ class AppController extends Controller {
 		if (!empty($this->request->query['ag_id']) && !empty($this->viewVars['menu'])){
 			$this->viewVars['menu'] = array_map(function($a){
 				if(!in_array($a['href'], array('#', 'javascript:void(0)'))){
-					$a['href'] .= '?ag_id='.$this->request->query['ag_id'];	
+					$a['href'] .= (stripos($a['href'], '?') !== false?'&':'?').'ag_id='.$this->request->query['ag_id'];	
 				}
 				return $a;
 			}, $this->viewVars['menu']);
