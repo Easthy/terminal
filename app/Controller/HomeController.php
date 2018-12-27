@@ -63,6 +63,7 @@ class HomeController extends AppController {
 	public function get_screensaver(){
 		$this->render('/Layouts/ajax', 'ajax');
 		$agency_id = AppModel::get_agency_id();
+		$settings = Configure::read('Terminal');
 		$this->loadModel('ScreenSaver');
 		$params = array(
 			'agency_id' => $agency_id
