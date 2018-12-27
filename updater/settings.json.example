@@ -1,8 +1,8 @@
 {
 	"credentials": {"email":"update@infomat.moscow","password":"infomat","remember_me":false},
-	"storage_base_path": "/var/www/Yandex/Терминал/updater/file_cache",
+	"storage_base_path": "/var/www/terminal/updater/file_cache",
 	"updater_sql_path": "/var/www/terminal/updater/sql/updater.sql",
-	"file_root_path": "/var/www//Терминал/updater",
+	"file_root_path": "/var/www/terminal/webroot",
 	"file_url": "http://infomat.moscow",
 	"user_agent": "infomat-updater",
 	"base_url": "http://dreamfactory.infomat.moscow",
@@ -15,7 +15,7 @@
 		"host": "localhost",
 		"database": "infomat_qt_sync",
 		"user": "postgres",
-		"password": "H4O4"
+		"password": "infomat"
 	},
 	"sh_query_params": {
     	"fields": "*", 
