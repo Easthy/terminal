@@ -31,7 +31,7 @@ class Terminal(QMainWindow):
         self.statusBar().hide()
         self.setObjectName("MainWindow")
         # Hide window frame
-        # self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
        
         self.webView = WebEngineView()
         self.openPage(self.pages['home'])
@@ -59,7 +59,7 @@ class Terminal(QMainWindow):
         self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.AllowRunningInsecureContent, True)
         self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
         
-        self.showFullScreen()
+        self.show() #FullScreen
         self.hideKeyboard()
         # self.webView.loadStarted.connect(self.hideKeyboard)
         self.webView.urlChanged.connect(self.afterPageLoad)
@@ -71,6 +71,12 @@ class Terminal(QMainWindow):
         self.DigitKeyboard.keyClick.connect(self.clickHandler)
         self.DigitKeyboard.homeClick.connect(partial(self.openPage, self.pages['home']))
         self.webView.focusProxy().installEventFilter(self)
+        # Enable filter by setting to 1
+        self.filter_edge = 0
+        self.filter_series = 0
+        self.filter_short = 0
+        self.filter_long = 0
+        self.filter_immed_move = 0
         # Default event filter settings
         self.press_timestamp = 0
         self.release_timestamp = 0
@@ -88,6 +94,9 @@ class Terminal(QMainWindow):
         self.press_release_distance = 500
         self.scr_set_delay = 60000 # ms
         self.scr_up_delay = 1800000 # ms
+        # Long press to activate screensaver
+        self.press_scr_activation = 5 # s
+        self.scr_manual_activated = 0
         # Load and overwrite default settings
         self.load_settings()
         # Screensaver set timer
@@ -125,8 +134,6 @@ class Terminal(QMainWindow):
         """Reset screensaver timer if user action detected"""
         timer.setInterval(delay)
         timer.start()
-        # self.timer_scr_set.setInterval(self.scr_set_delay)
-        # self.timer_scr_set.start()
 
     def stopTimer(self, timer):
         """Stop screensaver timer"""
@@ -155,12 +162,18 @@ class Terminal(QMainWindow):
         readable_event_timestamp = datetime.utcfromtimestamp(event_timestamp).strftime('%Y-%m-%d %H:%M:%S.%f')
 
         # This filter should be enabled only with 90 degree rotated screen
-        # if cursor_x < self.cursor_x_min or cursor_x > self.cursor_x_max or cursor_y < self.cursor_y_min or cursor_y > self.cursor_y_max:
-            # return True
+        if self.filter_edge and \
+           (cursor_x < self.cursor_x_min or 
+           cursor_x > self.cursor_x_max or 
+           cursor_y < self.cursor_y_min or 
+           cursor_y > self.cursor_y_max):
+            return True
 
         # Filter series of fast false click
         if event.type() == QtCore.QEvent.MouseButtonPress:
-            if (self.release_timestamp > 0 and event_timestamp - self.release_timestamp < self.press_min_pause):
+            if self.filter_series and \
+              (self.release_timestamp > 0 and 
+               event_timestamp - self.release_timestamp < self.press_min_pause):
                 return True
             self.press_timestamp = event_timestamp
             self.cursor_x = cursor_x
@@ -168,9 +181,22 @@ class Terminal(QMainWindow):
 
         # Filter short and long press. Reset screensaver timer 
         if event.type() == QtCore.QEvent.MouseButtonRelease:
-            if (event_timestamp - self.press_timestamp < self.press_min_duration or event_timestamp - self.press_timestamp > self.press_max_duration):
+            press_duration = event_timestamp - self.press_timestamp
+            # Activate screensaver on long touch
+            if (press_duration >= self.press_scr_activation):
+                # self.scr_manual_activated = 0 if self.scr_manual_activated else 1
+                # if (self.scr_manual_activated):
+                self.setScreensaver()
+            # Filters
+            if self.filter_short and \
+              (press_duration < self.press_min_duration):
                 return True
-            if ((cursor_x - self.cursor_x) > self.press_release_distance or (cursor_y - self.cursor_y) > self.press_release_distance):
+            if self.filter_long and \
+              (press_duration > self.press_max_duration and
+               press_duration < self.press_scr_activation):
+                return True
+            if ((cursor_x - self.cursor_x) > self.press_release_distance or \
+               (cursor_y - self.cursor_y) > self.press_release_distance):
                 return True
             self.release_timestamp = event_timestamp
             # Reset screensaver set timer when user touchs the screen
@@ -179,7 +205,7 @@ class Terminal(QMainWindow):
             self.stopTimer(self.timer_scr_up)
 
         # Filter move when it starts immediately
-        if event.type() == QtCore.QEvent.MouseMove:
+        if self.filter_immed_move and event.type() == QtCore.QEvent.MouseMove:
             if(self.press_timestamp < self.release_timestamp):
                 return True
             if(event_timestamp - self.release_timestamp < self.move_after_release_min):

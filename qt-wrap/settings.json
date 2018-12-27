@@ -1,4 +1,9 @@
 {
+    "filter_edge": 1,
+    "filter_series": 1,
+    "filter_short": 1,
+    "filter_long": 1,
+    "filter_immed_move": 1,
     "press_min_pause" : 0.2,
     "press_min_duration" : 0.16,
     "press_max_duration" : 0.6,
@@ -9,5 +14,7 @@
     "cursor_x_max" : 1060,
     "cursor_y_min" : 20,
     "cursor_y_max" : 1900,
-    "screen_saver_delay": 50000
+    "scr_set_delay": 60000,
+    "scr_up_delay": 1800000,
+    "press_scr_activation": 5
 }
