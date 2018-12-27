@@ -59,7 +59,7 @@ class Terminal(QMainWindow):
         self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.AllowRunningInsecureContent, True)
         self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
         
-        self.showFullScreen() #
+        self.show() #FullScreen
         self.hideKeyboard()
         # self.webView.loadStarted.connect(self.hideKeyboard)
         self.webView.urlChanged.connect(self.afterPageLoad)
@@ -94,6 +94,9 @@ class Terminal(QMainWindow):
         self.press_release_distance = 500
         self.scr_set_delay = 60000 # ms
         self.scr_up_delay = 1800000 # ms
+        # Long press to activate screensaver
+        self.press_scr_activation = 5 # s
+        self.scr_manual_activated = 0
         # Load and overwrite default settings
         self.load_settings()
         # Screensaver set timer
@@ -178,11 +181,22 @@ class Terminal(QMainWindow):
 
         # Filter short and long press. Reset screensaver timer 
         if event.type() == QtCore.QEvent.MouseButtonRelease:
-            if self.filter_short and (event_timestamp - self.press_timestamp < self.press_min_duration):
+            press_duration = event_timestamp - self.press_timestamp
+            # Activate screensaver on long touch
+            if (press_duration >= self.press_scr_activation):
+                # self.scr_manual_activated = 0 if self.scr_manual_activated else 1
+                # if (self.scr_manual_activated):
+                self.setScreensaver()
+            # Filters
+            if self.filter_short and \
+              (press_duration < self.press_min_duration):
                 return True
-            if self.filter_long and (event_timestamp - self.press_timestamp > self.press_max_duration):
+            if self.filter_long and \
+              (press_duration > self.press_max_duration and
+               press_duration < self.press_scr_activation):
                 return True
-            if ((cursor_x - self.cursor_x) > self.press_release_distance or (cursor_y - self.cursor_y) > self.press_release_distance):
+            if ((cursor_x - self.cursor_x) > self.press_release_distance or \
+               (cursor_y - self.cursor_y) > self.press_release_distance):
                 return True
             self.release_timestamp = event_timestamp
             # Reset screensaver set timer when user touchs the screen

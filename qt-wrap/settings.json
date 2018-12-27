@@ -15,5 +15,6 @@
     "cursor_y_min" : 20,
     "cursor_y_max" : 1900,
     "scr_set_delay": 60000,
-    "scr_up_delay": 1800000
+    "scr_up_delay": 1800000,
+    "press_scr_activation": 5
 }
