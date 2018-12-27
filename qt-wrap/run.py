@@ -59,7 +59,7 @@ class Terminal(QMainWindow):
         self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.AllowRunningInsecureContent, True)
         self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
         
-        self.showFullScreen()
+        self.showFullScreen() #
         self.hideKeyboard()
         # self.webView.loadStarted.connect(self.hideKeyboard)
         self.webView.urlChanged.connect(self.afterPageLoad)
@@ -71,7 +71,7 @@ class Terminal(QMainWindow):
         self.DigitKeyboard.keyClick.connect(self.clickHandler)
         self.DigitKeyboard.homeClick.connect(partial(self.openPage, self.pages['home']))
         self.webView.focusProxy().installEventFilter(self)
-        #
+        # Enable filter by setting to 1
         self.filter_edge = 0
         self.filter_series = 0
         self.filter_short = 0

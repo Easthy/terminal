@@ -14,5 +14,6 @@
     "cursor_x_max" : 1060,
     "cursor_y_min" : 20,
     "cursor_y_max" : 1900,
-    "screen_saver_delay": 50000
+    "scr_set_delay": 60000,
+    "scr_up_delay": 1800000
 }
