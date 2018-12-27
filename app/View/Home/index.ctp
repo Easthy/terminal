@@ -141,7 +141,7 @@
 	</div>
 </a>
 
-<a href="javascript:void(0)" class="open-page" data-href="https://emias.info/appointment/">
+<!-- <a href="javascript:void(0)" class="open-page" data-href="https://emias.info/appointment/">
 	<div style="width:400px; height: 150px; float:left; background-color: #ffffff; border-radius: 80px; margin:20px;">
 		<div style="float: left; margin-left:100px;">
 			<div class="text-blue-small-thick text-open-sans text-centered" style="width: 150px; height: 150px;">Запись к врачу</div>
@@ -150,4 +150,4 @@
 			<img src="/img/icons/arrow-right.png" style="width:40px; height:40px;">
 		</div>	
 	</div>
-</a>
+</a> -->
