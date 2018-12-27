@@ -37,6 +37,14 @@
 						</div>
 					</div>
 				<?php endforeach; ?>
+			<?php else:?>
+					<div class="tab-item no-side-padding" style="text-align: center;">
+						<div class="activity-container">
+							<div class="activity-info valign">
+								<span class="text-black-small">Мероприятия не запланированы</span>
+							</div>
+						</div>
+					</div>
 			<?php endif;?>
 		</div>
 	</div>
