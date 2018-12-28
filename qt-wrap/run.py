@@ -184,9 +184,15 @@ class Terminal(QMainWindow):
             press_duration = event_timestamp - self.press_timestamp
             # Activate screensaver on long touch
             if (press_duration >= self.press_scr_activation):
-                # self.scr_manual_activated = 0 if self.scr_manual_activated else 1
-                # if (self.scr_manual_activated):
-                self.setScreensaver()
+                self.scr_manual_activated = 0 if self.scr_manual_activated else 1
+                if self.scr_manual_activated:
+                    self.setScreensaver()
+                else:
+                    self.openPage(self.pages['home'])
+                return False
+            # Filter out if screensaver activated
+            if self.scr_manual_activated:
+                return True
             # Filters
             if self.filter_short and \
               (press_duration < self.press_min_duration):
