@@ -125,7 +125,7 @@
 	</div>
 </a>
 
-<a href="javascript:void(0)" class="open-page" data-href="/activity/cityevents">
+<a href="javascript:void(0)" class="open-page" data-href="/activity/share_events">
 	<div style="width:400px; height: 150px; float:left; background-color: #ffffff; border-radius: 80px; margin:20px;">
 		<div style="margin-top:55px; margin-left:60px; float: left;">
 			<img src="/img/icons/theater.png" style="width:40px; height:40px;">

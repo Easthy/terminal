@@ -59,7 +59,7 @@ class Terminal(QMainWindow):
         self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.AllowRunningInsecureContent, True)
         self.page.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
         
-        self.show() #FullScreen
+        self.showFullScreen() #FullScreen
         self.hideKeyboard()
         # self.webView.loadStarted.connect(self.hideKeyboard)
         self.webView.urlChanged.connect(self.afterPageLoad)

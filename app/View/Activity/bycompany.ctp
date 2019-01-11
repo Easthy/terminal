@@ -2,7 +2,9 @@
 	<div class="company-logo" style="background-image: url('/img/tmp/activity_bycompany_logo.png');">
 		<div class="service-logo-layer" style="background-color: rgba(153,51,51,0.2)">
 			<div class="company-name-layer">
-				<span class="company-name-layer-text">Мероприятия учреждения</span>
+				<span class="company-name-layer-text">
+					<?=!empty($page_header)?$page_header:'Мероприятия учреждения'?>
+				</span>
 				<div>
 					<hr class="line-long-left">
 					<hr class="line-short-left">

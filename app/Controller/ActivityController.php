@@ -88,6 +88,9 @@ class ActivityController extends AppController {
 			),
 			'calendar' => array(
 				'name' => 'Календарь событий', 'href' => '/calendar'
+			),
+			'share_events' => array(
+				'name' => 'Общегородские мероприятия', 'href' => '/activity/share_events'
 			)
 		);
 
@@ -214,6 +217,29 @@ class ActivityController extends AppController {
 		$this->loadModel('CityActivity');
 		$categories = $this->CityActivity->get_data('get_city_activity_category_list',array(),'extract');
 		$this->set('categories',$categories);
+	}
+
+	public function share_events()
+	{
+		$this->layout = 'main';
+		
+		$menu = [
+			['name' => 'Главная', 'href' => '/'],
+			['name' => 'Общегородские мероприятия', 'href' => '#']
+		];
+		$this->set('menu', $menu);
+
+		$this->loadModel('Activity');
+		$activities = $this->Activity->get_data(
+			'get_shared_activity',
+			array(),
+			'format_activity_schedule'
+		);
+		$this->set('activity_action','info');
+		$this->set('activities',$activities);
+		$this->set('referer', 'share_events');
+		$this->set('page_header','Общегородские мероприятия');
+		$this->render('bycompany');
 	}
 
 	public function cityevents_list()

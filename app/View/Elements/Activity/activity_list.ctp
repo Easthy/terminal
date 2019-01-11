@@ -1,6 +1,6 @@
 			<?php if(!empty($activities)):?>
 				<?php foreach ($activities as $k => $activity): ?> 
-					<div class="tab-item no-side-padding open-page" data-id="<?=$k?>" data-href="/activity/<?=$activity_action?>?activity_id=<?=$activity['id']?>">
+					<div class="tab-item no-side-padding open-page" data-id="<?=$k?>" data-href="/activity/<?=$activity_action?>?activity_id=<?=$activity['id']?><?=!empty($referer)?'&referer='.$referer:''?>">
 						<div class="activity-container">
 							<div class="activity-date valign">
 								<span class="text-white-small-thick"><?= $activity['date'] ?></span>
@@ -25,6 +25,7 @@
 										echo '</span>';
 									}	
 								?>
+								<?=!empty($activity['ag_shortname'])? '<br>'.$activity['ag_shortname'] : ''?>
 							</div>
 							<div class="profile-inner valign" style="width: 80px;">
 								<div class="check-profile"></div>
