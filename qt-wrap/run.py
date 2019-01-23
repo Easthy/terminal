@@ -97,9 +97,11 @@ class Terminal(QMainWindow):
         # Long press to activate screensaver
         self.press_scr_activation = 5 # s
         self.scr_manual_activated = 0
+        # Screen active
+        self.scr_on = 1
         # Load and overwrite default settings
         self.load_settings()
-        # Screensaver set timer
+        # Screensaver settings
         self.timer_scr_set = QtCore.QTimer()
         self.timer_scr_set.timeout.connect(self.setScreensaver)
         self.resetTimer(self.timer_scr_set, self.scr_set_delay)
@@ -132,6 +134,8 @@ class Terminal(QMainWindow):
 
     def resetTimer(self, timer, delay):
         """Reset screensaver timer if user action detected"""
+        if not self.scr_on:
+            return 
         timer.setInterval(delay)
         timer.start()
 
