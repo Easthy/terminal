@@ -97,8 +97,10 @@ class Terminal(QMainWindow):
         # Long press to activate screensaver
         self.press_scr_activation = 5 # s
         self.scr_manual_activated = 0
-        # Screen active
+        # Screensave active
         self.scr_on = 1
+        # Activate screensaver on long press
+        self.scr_long_activation = 0
         # Load and overwrite default settings
         self.load_settings()
         # Screensaver settings
@@ -187,7 +189,7 @@ class Terminal(QMainWindow):
         if event.type() == QtCore.QEvent.MouseButtonRelease:
             press_duration = event_timestamp - self.press_timestamp
             # Activate screensaver on long touch
-            if (press_duration >= self.press_scr_activation):
+            if (self.scr_long_activation and press_duration >= self.press_scr_activation):
                 self.scr_manual_activated = 0 if self.scr_manual_activated else 1
                 if self.scr_manual_activated:
                     self.setScreensaver()

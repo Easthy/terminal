@@ -1,0 +1,22 @@
+{
+    "filter_edge": 1,
+    "filter_series": 1,
+    "filter_short": 1,
+    "filter_long": 1,
+    "filter_immed_move": 1,
+    "press_min_pause" : 0.2,
+    "press_min_duration" : 0.16,
+    "press_max_duration" : 0.6,
+    "move_after_release_min": 0.5,
+    "move_after_press_min": 0.1,
+    "press_release_distance": 500,
+    "cursor_x_min" : 20,
+    "cursor_x_max" : 1060,
+    "cursor_y_min" : 20,
+    "cursor_y_max" : 1900,
+    "scr_on": 1,
+    "scr_set_delay": 60000,
+    "scr_up_delay": 120000,
+    "scr_long_activation": 0,
+    "press_scr_activation": 5
+}
