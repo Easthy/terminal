@@ -54,6 +54,12 @@ class Activity extends AppModel {
                 'limit'     => '500'
             )
         ),
+        'get_shared_activity'   =>  array(
+            'sql'       =>  'get_shared_activity.sql',
+            'params'    =>  array(
+                'limit'     => '500'
+            )
+        ),
         'get_activity_by_id'   =>  array(
             'sql'       =>  'get_activity_by_id.sql',
             'params'    =>  array(

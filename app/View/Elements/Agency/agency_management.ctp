@@ -17,7 +17,7 @@
 							<span class="position"><?= $profile['post'] ?></span>
 							<br>
 							<?php if(!empty($profile['phone'])):?>
-								<span class="phone">Тел.: <?= $profile['phone'] ?></span>
+								<span class="phone"><?= $profile['phone'] ?></span>
 							<?php endif;?>
 						</div>
 						<div class="profile-inner valign" style="width: 60px;">

@@ -77,7 +77,7 @@ class CompanyController extends AppController {
 		$this->set('agency',$agency);
 
 		$this->loadModel('AgencyManagement');
-		$management = $this->AgencyManagement->get_data('get_agency_management',array('agency_id'=>AppModel::toPgArray($affiliate_id)),'extract');
+		$management = $this->AgencyManagement->get_data('get_agency_management',array('agency_id'=>AppModel::toPgArray($agency['id'])),'extract');
 		$this->set('management',$management);
 
 		$this->loadModel('AgencyPhotoAlbum');
