@@ -4,9 +4,10 @@
 						$link='/activity/'.$activity_action.'?activity_id='.$activity['id'];
 
 						if(!empty($referer)) {
-							foreach($referer as $key=> $r){
-								$link .= '&referer[]='.$r.'&referer_link[]='.$referer_link[$key];
-							}
+							// foreach($referer as $key=> $r){
+							// 	$link .= '&referer[]='.$r.'&referer_link[]='.$referer_link[$key];
+							// }
+							$link .= '&referer='.$referer;
 						}
 					?>
 					<div class="tab-item no-side-padding open-page" 
