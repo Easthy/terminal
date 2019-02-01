@@ -19,6 +19,7 @@ WHERE
 AND a.execution_state = 0
 AND a.periodicity_id = 1 /* One-time activity */
 AND a.agency_id = :agency_id
+AND a.start_date BETWEEN CURRENT_DATE AND (CURRENT_DATE + 14)
 
 UNION ALL
 
