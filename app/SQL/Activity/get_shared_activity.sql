@@ -75,6 +75,7 @@ WHERE
     a.state = 0
 AND a.execution_state = 0
 AND a.periodicity_id = 2 /* Periodical activity */
+AND c.date BETWEEN CURRENT_DATE AND (CURRENT_DATE + 14)
 
 ORDER BY
     4
