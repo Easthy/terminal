@@ -38,26 +38,26 @@ class Activity extends AppModel {
     	'get_agency_coming_activity'	=> 	array(
     		'sql'		=>	'get_agency_coming_activity.sql',
     		'params'	=>	array(
-    			'interval'	=> '21 DAYS',
+    			'interval'	=> '14 DAYS',
                 'limit'     => '20'
     		)
     	),
         'get_agency_coming_activity_by_date'    =>  array(
             'sql'       =>  'get_agency_coming_activity_by_date.sql',
             'params'    =>  array(
-                'limit'     => '100'
+                'limit'     => '50'
             )
         ),
         'get_activity_by_agency'   =>  array(
             'sql'       =>  'get_activity_by_agency.sql',
             'params'    =>  array(
-                'limit'     => '100'
+                'limit'     => '50'
             )
         ),
         'get_shared_activity'   =>  array(
             'sql'       =>  'get_shared_activity.sql',
             'params'    =>  array(
-                'limit'     => '100'
+                'limit'     => '50'
             )
         ),
         'get_activity_by_id'   =>  array(
