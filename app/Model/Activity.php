@@ -45,19 +45,19 @@ class Activity extends AppModel {
         'get_agency_coming_activity_by_date'    =>  array(
             'sql'       =>  'get_agency_coming_activity_by_date.sql',
             'params'    =>  array(
-                'limit'     => '500'
+                'limit'     => '100'
             )
         ),
         'get_activity_by_agency'   =>  array(
             'sql'       =>  'get_activity_by_agency.sql',
             'params'    =>  array(
-                'limit'     => '500'
+                'limit'     => '100'
             )
         ),
         'get_shared_activity'   =>  array(
             'sql'       =>  'get_shared_activity.sql',
             'params'    =>  array(
-                'limit'     => '500'
+                'limit'     => '100'
             )
         ),
         'get_activity_by_id'   =>  array(
