@@ -23,7 +23,7 @@ WHERE
     a.state = 0
 AND a.execution_state = 0
 AND a.periodicity_id = 1 /* One-time activity */
-AND a.start_date BETWEEN CURRENT_DATE AND (CURRENT_DATE + 14)
+AND a.start_date BETWEEN CURRENT_DATE AND (CURRENT_DATE + 3)
 
 UNION ALL
 
@@ -76,7 +76,7 @@ WHERE
     a.state = 0
 AND a.execution_state = 0
 AND a.periodicity_id = 2 /* Periodical activity */
-AND c.date BETWEEN CURRENT_DATE AND (CURRENT_DATE + 14)
+AND c.date BETWEEN CURRENT_DATE AND (CURRENT_DATE + 3)
 
 ORDER BY
     4
