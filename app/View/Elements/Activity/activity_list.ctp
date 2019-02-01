@@ -1,10 +1,7 @@
 			<?php if(!empty($activities)):?>
 				<?php foreach ($activities as $k => $activity): ?> 
-<<<<<<< HEAD
 					<div class="tab-item no-side-padding open-page" data-id="<?=$k?>" data-href="/activity/<?=$activity_action?>?activity_id=<?=$activity['id']?><?=!empty($this->request->query['ag_id'])?'&ag_id='.$this->request->query['ag_id']:''?>">
-=======
-					<div class="tab-item no-side-padding open-page" data-id="<?=$k?>" data-href="/activity/<?=$activity_action?>?activity_id=<?=$activity['id']?><?=!empty($referer)?'&referer='.$referer:''?>">
->>>>>>> master
+
 						<div class="activity-container">
 							<div class="activity-date valign">
 								<span class="text-white-small-thick"><?= $activity['date'] ?></span>
