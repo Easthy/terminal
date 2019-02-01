@@ -20,7 +20,7 @@ class Terminal(QMainWindow):
     pages = {
         "home": "https://test-terminal"
     }
-    host_allowed = ['emias.info', 'test-terminal']
+    host_allowed = ['emias.info', 'test-terminal', '', ' ']
 
     def __init__(self):
         super().__init__()
