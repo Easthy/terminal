@@ -101,7 +101,7 @@ class CompanyController extends AppController {
 		];
 		$this->set('menu', $menu);
         $this->set('activity_action','info');
-		$this->set('referer',array('Справочник учреждений',htmlspecialchars($agency['shortname'])));
+		// $this->set('referer',array('Справочник учреждений',htmlspecialchars($agency['shortname'])));
 		$this->set('referer_link',array('/company/list_',htmlspecialchars('/company/info?agency_id='.$this->request->query['agency_id'])));
 	}
 }

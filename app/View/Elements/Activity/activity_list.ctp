@@ -1,6 +1,17 @@
 			<?php if(!empty($activities)):?>
 				<?php foreach ($activities as $k => $activity): ?> 
-					<div class="tab-item no-side-padding open-page" data-id="<?=$k?>" data-href="/activity/<?=$activity_action?>?activity_id=<?=$activity['id']?><?=!empty($referer)?'&referer='.$referer:''?>">
+					<?
+						$link='/activity/'.$activity_action.'?activity_id='.$activity['id'];
+
+						if(!empty($referer)) {
+							foreach($referer as $key=> $r){
+								$link .= '&referer[]='.$r.'&referer_link[]='.$referer_link[$key];
+							}
+						}
+					?>
+					<div class="tab-item no-side-padding open-page" 
+						data-id="<?=$k?>" 
+						data-href="<?=$link?>">
 						<div class="activity-container">
 							<div class="activity-date valign">
 								<span class="text-white-small-thick"><?= $activity['date'] ?></span>
