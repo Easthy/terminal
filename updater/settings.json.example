@@ -31,6 +31,12 @@
 	        },
 	        "service": "infomat_qt"
 	    },
+	    "coming_activity": {
+	        "query_params": {
+	            "fields": "*"
+	        },
+	        "service": "infomat_qt"
+	    },
 	    "activity": {
 	        "query_params": {
 	            "fields": "*"

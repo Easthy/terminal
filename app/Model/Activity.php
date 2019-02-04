@@ -38,7 +38,6 @@ class Activity extends AppModel {
     	'get_agency_coming_activity'	=> 	array(
     		'sql'		=>	'get_agency_coming_activity.sql',
     		'params'	=>	array(
-    			'interval'	=> '14 DAYS',
                 'limit'     => '20'
     		)
     	),
