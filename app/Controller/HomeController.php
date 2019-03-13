@@ -84,7 +84,35 @@ class HomeController extends AppController {
 		$this->render('/Layouts/ajax', 'ajax');
 
 		$this->log($_FILES);
-		AppModel::uploadFile('tmp/video/');
-		debug( $this->request );
+		$file = AppModel::uploadFile('tmp/video/');
+		$url = 'http://infomat.moscow/video/upload';
+
+		$file_upload = WWW_ROOT.'tmp/video/'.$file;
+		$mime = mime_content_type($file_upload);
+		$info = pathinfo($file_upload);
+		$name = $info['basename'];
+		$output = new CURLFile($file_upload, $mime, $name);
+
+        $curl                       = curl_init();
+        $post = array(
+    		'upfile' => $output,
+    		'ag_id' => AppModel::get_agency_id()
+    	);
+
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $post);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        $curl_result                = curl_exec($curl);
+        $info                       = curl_getinfo($curl);
+        $result_url                 = $info['url'];
+        curl_close($curl);
+        debug($curl_result);
+        debug($info);
+
+		echo 'success';
 	}
 }

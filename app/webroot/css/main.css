@@ -397,6 +397,24 @@ a.btn {
 	border: 1px solid #009999;
 }
 
+.btn-2-green {
+	background-color: #00cc99;
+	border: 1px solid #009999;
+	color: #fff;
+}
+
+.btn-2-red {
+	background-color: #d9534f !important;
+	border: 1px solid #d43f3a !important;
+	color: #fff !important;
+}
+
+.btn-2-yellow {
+	background-color: #f0ad4e;
+	border: 1px solid #eea236;
+	color: #fff;
+}
+
 .btn-white {
 	background-color: #ffffff;
 	border: 1px solid grey;
@@ -784,4 +802,8 @@ body, a, img, div {
 	-moz-user-drag: none;
 	-o-user-drag: none;
 	user-drag: none;
+}
+
+video::-webkit-media-controls {
+  display: none;
 }

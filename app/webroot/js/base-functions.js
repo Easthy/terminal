@@ -147,6 +147,10 @@ $(function() {
 		var src = $(this).find('img').attr('src');
 		$('.company-logo').css('background-image', 'url('+src+')' );
 	});
+
+	$(document).on('tap','#footer',function(){
+		window.location.href = '/home/webcam';
+	});
 });
 Date.prototype.ddmmyyyy = function() {
    var yyyy = this.getFullYear().toString();
