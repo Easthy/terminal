@@ -110,8 +110,7 @@ class HomeController extends AppController {
         $info                       = curl_getinfo($curl);
         $result_url                 = $info['url'];
         curl_close($curl);
-        debug($curl_result);
-        debug($info);
+
 
 		echo 'success';
 	}
