@@ -16,12 +16,22 @@
 </div>
 
 <div style="padding:25px; width:800px; margin: auto;">
-<a id="record" href="javascript:void(0)" type="button" class="btn btn-2-green" style="float:left; padding: 10px;">Запись/Остановка</a>
-<a id="send" href="javascript:void(0)" type="button" class="btn btn-2-yellow" style="float:right; padding: 10px;">Отправить</a>
+<a id="record" href="javascript:void(0)" type="button" class="btn btn-2-green" style="float:left; padding: 15px;">Запись/Остановка</a>
+<a id="send" href="javascript:void(0)" type="button" class="btn btn-2-yellow" style="float:right; padding: 15px;">Отправить</a>
+<div class="clear"></div>
 </div>
+
+<div style="padding:25px; width:100px; margin: 0 auto auto auto;">
+    <a id="home" href="javascript:void(0)" type="button" class="btn btn-white" style="padding: 15px 50px;">Выход</a>
+</div>
+
 
 <script type="text/javascript">
     $(function(){
+        $(document).on('tap','#home',function(){
+            window.location.href='/';
+        });
+
         window.camer = null
         // capture camera and/or microphone
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function(camera) {
@@ -86,9 +96,9 @@
             };
             request.upload.onload = function() {
                 $('#info-box').html('Видео успешно отправлено.<br>Вы будете направлены на главную страницу.');
-                // setTimeout(function(){
-                //     window.location.href = '/'
-                // }, 3000);
+                setTimeout(function(){
+                    window.location.href = '/'
+                }, 3000);
             };
             request.upload.onerror = function(error) {
                 $('#info-box').html('Видео не было отправлено.');
