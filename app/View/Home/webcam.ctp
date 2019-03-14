@@ -2,16 +2,19 @@
 <script src="/js/adapter-latest.js"></script>
 <style>
     video {
-      background-color: #00007a;
-      width: 950px;
-      height: 800px;
-      margin: 20px 0 0 15px;
-    }
+    background-color: #00007a;
+    width: 800px;
+    height: 800px;
+    /* Rotating */
+    position: relative;
+    transform: rotate(-90deg);
+    left: 70px;
+}
 </style>
 
 <div id="media-box" style="position: relative;">
-    <div id="info-box" style="margin-top: 15px;font-size: 25px;color: yellow; font-weight: 700;"></div>
-    <h2 id="recording-state" style="position: absolute; top:150px; left:50px; margin-top: 10px; margin-left: 10px; display: block; border: 0;line-height:1.5;z-index:1;"></h2>
+    <div id="info-box" style="margin-top: 15px; margin-bottom:15px; font-size: 25px;color: yellow; font-weight: 700;"></div>
+    <h2 id="recording-state" style="position: absolute; top:80px; left:100px; margin-top: 10px; margin-left: 10px; display: block; border: 0;line-height:1.5;z-index:1;"></h2>
     <video id="your-video-id" controls="" autoplay=""></video>
 </div>
 
