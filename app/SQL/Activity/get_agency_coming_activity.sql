@@ -26,9 +26,9 @@ UNION ALL
 /* Periodical activities */
 SELECT
 	a.id,
-	to_char(c.date, 'DD') as date,
-	to_char(c.date, 'MM') as month,
-	c.date,
+	to_char(CURRENT_DATE, 'DD') as date,
+	to_char(CURRENT_DATE, 'MM') as month,
+	CURRENT_DATE,
 	a.name,
 	a.schedule as activity_schedule,
 	a.periodicity_id,
@@ -40,37 +40,13 @@ FROM
 LEFT JOIN public.activity_category ac
 ON ac.id=a.category_id
 
-INNER JOIN public.calendar c
--- Calendar date in the activity date range (from start date to end date)
-ON c.date BETWEEN a.start_date AND COALESCE(a.end_date, CURRENT_DATE)
--- Day of week in the activity schedule
-AND c.day IN (
-	with activity_rows as (
-		SELECT 
-			json_populate_recordset(NULL :: SCHEDULE, REPLACE(trim(a.schedule::text,'"'), '\"', '"')::json) as schedule
-	    FROM
-	    	public.activity
-	    ORDER BY
-	    	id
-	),
-	b as (
-		select 
-			schedule::text::schedule as w 
-		from 
-			activity_rows
-	)
-	select
-		(w).date
-	from 
-		b
-)
 WHERE
 	a.state = 0
 AND a.execution_state = 0
 AND a.periodicity_id = 2 /* Periodical activity */
 AND a.agency_id = :agency_id
 -- Calendar date equals or greater than current date
-AND c.date BETWEEN CURRENT_DATE AND public._calc_interval((now() at time zone 'utc'), :interval::varchar)
+AND CURRENT_DATE BETWEEN a.start_date AND a.end_date
 
 ORDER BY
 	4
