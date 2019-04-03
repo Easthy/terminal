@@ -113,6 +113,12 @@ class Activity extends AppModel {
         $week_dictionary = $this->week_dictionary;
         $one_time_activity = $this->one_time_activity;
         $data = array_map(function($a) use ($month_dictionairy,$week_dictionary,$one_time_activity) {
+            if (empty($a['activity_schedule'])){
+                $a['start_date'] = date_format(date_create($a['start_date']),'d.m.Y');
+                $a['start_time'] = '';
+                $a['schedule'] = false;
+                return $a;
+            }
             $a['month'] = !empty($month_dictionairy[$a['month']]) ? $month_dictionairy[$a['month']] : $a['month'];
             $activity_schedule = AppModel::json_decode_escaped($a['activity_schedule'],true);
             $a['schedule'] = array();

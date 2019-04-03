@@ -14,11 +14,14 @@
 						data-id="<?=$k?>" 
 						data-href="<?=$link?>">
 						<div class="activity-container">
+							<?php if(!empty($activity['date'])):?>
 							<div class="activity-date valign">
-								<span class="text-white-small-thick"><?= $activity['date'] ?></span>
-								<br>
-								<span class="text-white-small-thin"><?= $activity['month'] ?></span>
+									<span class="text-white-small-thick"><?= $activity['date'] ?></span>
+									<br>
+									<span class="text-white-small-thin"><?= $activity['month'] ?></span>
+								
 							</div>
+							<?php endif;?>
 							<div class="activity-type valign">
 								<?php if(!empty($activity['category_image'])):?>
 									<img src="/<?=$activity['category_icon']?>">
@@ -31,10 +34,12 @@
 									if($activity['periodicity_id']==ONE_TIME_ACTIVITY_ID) {
 										echo '<span class="text-blue-small-thick">Начало в '.$activity['start_time'].'</span>';
 									} else {
-										echo '<span class="text-blue-small-thick">Расписание:</span><br>';
-										echo '<span class="text-blue-small-thin">';
-										echo join(',',$activity['schedule']);
-										echo '</span>';
+										if (!empty($activity['schedule'])){
+											echo '<span class="text-blue-small-thick">Расписание:</span><br>';
+											echo '<span class="text-blue-small-thin">';
+											echo (!empty($activity['schedule'])?join(',',$activity['schedule']):'');
+											echo '</span>';
+										}
 									}	
 								?>
 								<?=!empty($activity['ag_shortname'])? '<br>'.$activity['ag_shortname'] : ''?>

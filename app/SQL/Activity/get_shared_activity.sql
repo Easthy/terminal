@@ -30,9 +30,9 @@ UNION ALL
 /* Periodical activities */
 SELECT
     a.id,
-    to_char(CURRENT_DATE, 'DD') as date,
-    to_char(CURRENT_DATE, 'MM') as month,
-    CURRENT_DATE,
+    '' as date,
+    '' as month,
+    a.start_date,
     a.name,
     a.schedule as activity_schedule,
     a.periodicity_id,
