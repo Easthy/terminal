@@ -1,1 +1,1 @@
-# This application is a website displayed in the interface of an information terminal https://github.com/Easthy/terminal
+# This application is an information terminal displaying the website https://github.com/Easthy/infomat
